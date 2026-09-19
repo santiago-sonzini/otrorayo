@@ -126,6 +126,6 @@ Se retiraron las paredes líquidas de la intro y del scroll. Ambas animaciones c
 
 ### Composición y recarga (v24)
 
-La sección de experiencias incluye tres ilustraciones seleccionables (realidad virtual, visuales e interacción). Las cinco líneas siguen una ruta medida sobre el documento, por los márgenes y entre los bloques, con separación perpendicular constante entre colores. Ya no usan puntos de fuga móviles. La frase de la intro tiene un área propia bajo el logo y sale antes de que éste se acople al hero. Se evitó la mezcla aditiva de los cinco rayos al converger.
+La sección de experiencias incluye tres ilustraciones seleccionables (realidad virtual, visuales e interacción). Tras revisar la propuesta, se restauraron los filamentos con perspectiva y avance de cámara de v23. Se retiró el recorrido de líneas por los bordes; se mantienen las mejoras de contenido y de la intro. La frase de la intro tiene un área propia bajo el logo y sale antes de que éste se acople al hero. Se evitó la mezcla aditiva de los cinco rayos al converger.
 
 `page-start.js` desactiva la restauración automática de scroll antes del layout. Una recarga elimina el fragmento de navegación y vuelve a `scrollY = 0`, incluso si antes se estaba en invitaciones o contacto. Los enlaces internos siguen funcionando durante la navegación normal.
