@@ -60,7 +60,7 @@ const CONFIG = Object.freeze({
     const visual = document.querySelector("#experience-visual");
     if (!visual) return;
     const names = {
-      vr: "Visor de realidad virtual sobre un escenario de luz",
+      vr: "Meta Quest 3S sobre un escenario de luz",
       visuals: "Escenario con tres pantallas de visuales",
       play: "Juego interactivo con una pantalla de objetivos",
     };

@@ -372,7 +372,7 @@
       prepared.value = message;
       const link = dialog.querySelector("#form-instagram");
       link.href = `https://wa.me/${config.whatsapp}?text=${encodeURIComponent(message)}`;
-      link.textContent = "Continuar en WhatsApp ↗";
+      link.textContent = "Continuar en WhatsApp";
       const payload = {
         name: value("name"),
         eventType: value("eventType"),

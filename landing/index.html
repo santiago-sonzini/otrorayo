@@ -71,13 +71,13 @@
       crossorigin
     />
     <link rel="stylesheet" href="font-options.css?v=16" />
-    <link rel="stylesheet" href="journey.css?v=24" />
+    <link rel="stylesheet" href="journey.css?v=26" />
     <script src="cosmic-scene.js?v=24" defer></script>
     <script src="journey.js?v=25" defer></script>
     <script src="cosmic-background.js?v=16" defer></script>
     <script src="event-scene.js?v=19" defer></script>
-    <script src="contact-modal.js?v=16" defer></script>
-    <script src="script.js?v=24" defer></script>
+    <script src="contact-modal.js?v=26" defer></script>
+    <script src="script.js?v=26" defer></script>
     <script src="spatial.js?v=24" defer></script>
     <script type="application/ld+json">
       {
@@ -191,14 +191,6 @@
       aria-hidden="true"
     >
       <defs>
-        <symbol id="arrow-up-right" viewBox="0 0 24 24">
-          <path
-            d="M5 19 19 5M5 5h14v14"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="1.4"
-          />
-        </symbol>
         <symbol id="arrow-right" viewBox="0 0 24 24">
           <path
             d="M4 12h15m-6-6 6 6-6 6"
@@ -223,10 +215,7 @@
         <a href="#experiencias">Experiencias</a>
         <a href="#invitacion">Invitaciones</a>
       </nav>
-      <a class="header-cta" href="#contacto"
-        >Contanos de tu evento
-        <svg aria-hidden="true"><use href="#arrow-up-right" /></svg
-      ></a>
+      <a class="header-cta" href="#contacto">Contanos de tu evento</a>
       <button
         id="menu-toggle"
         class="menu-toggle"
@@ -249,9 +238,8 @@
           <h1 id="hero-title">Hacemos que tu evento sea <em>único.</em></h1>
           <div class="hero-actions">
             <a class="button button-primary" href="#contacto"
-              >Contanos de tu evento
-              <svg aria-hidden="true"><use href="#arrow-up-right" /></svg
-            ></a>
+              >Contanos de tu evento</a
+            >
           </div>
         </div>
         <div class="hero-stage" aria-hidden="true">
@@ -281,16 +269,15 @@
           <h2 id="vr-title">Un mundo<br />dentro de<br />tu evento.</h2>
           <p>Realidad virtual, juegos y visuales a medida.</p>
           <a class="button experience-cta" href="#contacto"
-            >Diseñemos tu experiencia
-            <svg aria-hidden="true"><use href="#arrow-up-right" /></svg
-          ></a>
+            >Diseñemos tu experiencia</a
+          >
         </div>
         <figure class="experience-visual" id="experience-visual" data-mode="vr">
           <svg
             class="experience-art"
             viewBox="0 0 640 450"
             role="img"
-            aria-label="Visor de realidad virtual sobre un escenario de luz"
+            aria-label="Meta Quest 3S sobre un escenario de luz"
           >
             <defs>
               <linearGradient id="exp-metal" x1="0" y1="0" x2="0.8" y2="1">
@@ -338,51 +325,13 @@
               stroke-opacity=".55"
             />
             <g class="experience-object" data-visual="vr">
-              <path
-                d="M202 192v-56q12-84 126-79 112 5 124 85v58"
-                fill="none"
-                stroke="#0c1117"
-                stroke-width="32"
-              />
-              <path
-                d="M203 168v-28q10-78 122-78 103 0 124 83"
-                fill="none"
-                stroke="#65707c"
-                stroke-opacity=".55"
-                stroke-width="2"
-              />
-              <path
-                d="m165 175 50-19 250 11 39 36-9 103-40 29-257-14-38-36Z"
-                fill="url(#exp-metal)"
-                stroke="#8593a1"
-                stroke-opacity=".6"
-              />
-              <path
-                d="M177 165q-24 6-26 34l-3 73q1 37 38 43l97 7q22 1 35-22 11-20 25 0 10 23 34 24l73-4q28-3 29-32l4-76q-1-31-29-34Z"
-                fill="url(#exp-metal)"
-                stroke="#d5e0e9"
-                stroke-opacity=".75"
-              />
-              <path
-                d="M187 179q-20 2-21 26l-2 57q-2 34 28 38l87 7q26 1 39-23 14-19 30 5 8 18 28 20l66-4q24-1 25-26l2-64q-1-22-26-24Z"
-                fill="url(#exp-lens)"
-                stroke="#668298"
-                stroke-opacity=".5"
-              />
-              <path
-                d="m178 207 268 19m-266-11 265 19m-263-10 261 18"
-                stroke="url(#exp-spectrum)"
-                stroke-opacity=".55"
-                fill="none"
-              />
-              <path d="m179 181 261 13" stroke="#e5f4ff" stroke-opacity=".55" />
-              <circle cx="189" cy="284" r="5" fill="#050608" stroke="#67727c" />
-              <circle cx="443" cy="288" r="5" fill="#050608" stroke="#67727c" />
-              <path
-                d="m494 214-2 58"
-                stroke="#788996"
-                stroke-opacity=".5"
-                stroke-width="3"
+              <image
+                href="assets/images/meta-quest-3s.webp"
+                x="116"
+                y="25"
+                width="420"
+                height="330"
+                preserveAspectRatio="xMidYMid meet"
               />
             </g>
             <g class="experience-object" data-visual="visuals">
@@ -499,9 +448,8 @@
               el día.
             </p>
             <a class="text-link" href="#contacto" data-interest="invitacion"
-              >Quiero mi invitación
-              <svg aria-hidden="true"><use href="#arrow-up-right" /></svg
-            ></a>
+              >Quiero mi invitación</a
+            >
           </div>
         </div>
         <!-- Ejemplos indicados por el usuario. Capturas fieles, sin iframes ni cargas de terceros; conservan los créditos originales. -->
@@ -591,21 +539,19 @@
             href="https://www.instagram.com/otrorayo/"
             target="_blank"
             rel="noopener noreferrer"
-            >@otrorayo
-            <svg aria-hidden="true"><use href="#arrow-up-right" /></svg
-          ></a>
+            >@otrorayo</a
+          >
         </div>
         <div class="contact-launch">
           <a class="button button-primary" href="#contacto"
-            >Contanos de tu evento
-            <svg aria-hidden="true"><use href="#arrow-up-right" /></svg
-          ></a>
+            >Contanos de tu evento</a
+          >
           <span>Tres pasos para empezar algo único.</span>
           <noscript
             ><p>
               Para armar tu consulta,
               <a href="https://www.instagram.com/otrorayo/"
-                >escribinos por Instagram ↗</a
+                >escribinos por Instagram</a
               >.
             </p></noscript
           >
@@ -628,13 +574,13 @@
           href="https://wa.me/5493536563678"
           target="_blank"
           rel="noopener noreferrer"
-          >WhatsApp ↗</a
+          >WhatsApp</a
         ><a
           class="text-link"
           href="https://www.instagram.com/otrorayo/"
           target="_blank"
           rel="noopener noreferrer"
-          >Instagram ↗</a
+          >Instagram</a
         >
       </div>
       <div class="footer-bottom">
@@ -748,7 +694,7 @@
                         tabindex="-1"
                         data-value="Fiesta de 15"
                       >
-                        Fiesta de 15 <span aria-hidden="true">↗</span>
+                        Fiesta de 15
                       </button>
                       <button
                         type="button"
@@ -757,7 +703,7 @@
                         tabindex="-1"
                         data-value="Casamiento"
                       >
-                        Casamiento <span aria-hidden="true">↗</span>
+                        Casamiento
                       </button>
                       <button
                         type="button"
@@ -766,7 +712,7 @@
                         tabindex="-1"
                         data-value="Celebración privada"
                       >
-                        Celebración privada <span aria-hidden="true">↗</span>
+                        Celebración privada
                       </button>
                       <button
                         type="button"
@@ -775,7 +721,7 @@
                         tabindex="-1"
                         data-value="Evento de marca"
                       >
-                        Evento de marca <span aria-hidden="true">↗</span>
+                        Evento de marca
                       </button>
                       <button
                         type="button"
@@ -784,7 +730,7 @@
                         tabindex="-1"
                         data-value="Otro"
                       >
-                        Otro <span aria-hidden="true">↗</span>
+                        Otro
                       </button>
                     </div>
                   </div>
@@ -963,7 +909,7 @@
               hidden
             >
               <div class="budget-stage" aria-hidden="true">
-                <i></i><i></i><i></i><b>↗</b>
+                <i></i><i></i><i></i>
               </div>
               <div class="budget-value">
                 <output id="budget-value" for="budget">2.500</output
@@ -1028,13 +974,13 @@
                 href="https://wa.me/5493536563678"
                 target="_blank"
                 rel="noopener noreferrer"
-                >O escribinos por WhatsApp ↗</a
+                >O escribinos por WhatsApp</a
               >
               <div class="event-recap">
                 <span>TU COMBINACIÓN</span>
                 <p id="event-recap"></p>
                 <button type="button" id="edit-experiences">
-                  Editar experiencias ↗
+                  Editar experiencias
                 </button>
               </div>
             </section>
@@ -1064,7 +1010,7 @@
                   href="https://wa.me/5493536563678"
                   target="_blank"
                   rel="noopener noreferrer"
-                  >Continuar en WhatsApp ↗</a
+                  >Continuar en WhatsApp</a
                 >
               </div>
             </section>
@@ -1081,8 +1027,7 @@
               class="button button-primary"
               id="form-submit"
             >
-              <span id="wizard-next-label">Elegir experiencias</span
-              ><span aria-hidden="true">↗</span>
+              <span id="wizard-next-label">Elegir experiencias</span>
             </button>
           </footer>
         </form>

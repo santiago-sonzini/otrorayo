@@ -146,18 +146,53 @@ body.journey-enabled :is(.vr-copy, .contact-copy, .invitation-intro) {
 .service-card:hover {
   transform: none;
 }
+/* Collapsing the CTA also releases its width and gap in the navigation. */
+.js-ready .site-header {
+  gap: 0;
+}
 .header-cta.is-scroll-managed {
+  max-width: 0;
+  min-width: 0;
+  padding-inline: 0;
+  border-inline-width: 0;
+  margin-left: 0;
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
   transition:
+    max-width 320ms ease,
+    padding 320ms ease,
+    margin 320ms ease,
+    border-width 320ms ease,
     opacity 220ms ease,
-    visibility 220ms;
+    visibility 320ms;
 }
 .header-cta.is-scroll-managed.is-visible {
+  max-width: 240px;
+  padding-inline: 15px;
+  border-inline-width: 1px;
+  margin-left: 22px;
   opacity: 1;
   visibility: visible;
   pointer-events: auto;
+}
+.button,
+.header-cta {
+  justify-content: center;
+}
+@media (max-width: 1099px) {
+  .header-cta.is-scroll-managed,
+  .header-cta.is-scroll-managed.is-visible {
+    margin-left: auto;
+  }
+  .js-ready .menu-toggle {
+    margin-left: 8px;
+  }
+}
+@media (max-width: 767px) {
+  .header-cta.is-scroll-managed.is-visible {
+    padding-inline: 12px;
+  }
 }
 .vr-copy .experience-cta {
   min-height: 56px;
