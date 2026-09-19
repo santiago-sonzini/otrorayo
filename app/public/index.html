@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>OTRORAYO · VR CONTROL</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <div class="shell">
+    <header class="topbar">
+      <div class="brand"><span class="brandmark">O<span>×</span>R</span><span class="brandtext">OTRORAYO <b>VR CONTROL</b><small>LOCAL SHOW SYSTEM / PROTOTIPO 0.1</small></span></div>
+      <div class="server-pill"><span class="live-dot"></span> CONTROLADOR LOCAL <strong id="server-status">CONECTANDO</strong></div>
+    </header>
+
+    <main>
+      <section class="hero panel">
+        <div class="hero-copy"><span class="eyebrow">EVENTO ACTIVO</span><h1 id="event-name">SIN EVENTO</h1><p id="experience-name">Cargá una experiencia para comenzar</p></div>
+        <div class="hero-metrics"><div><strong id="online-count">0 / 2</strong><span>QUEST ONLINE</span></div><div><strong id="ready-count">0 / 2</strong><span>CONTENIDO VALIDADO</span></div><div><strong id="master-clock">00:00</strong><span>TIEMPO MAESTRO</span></div></div>
+        <div class="phase" id="phase">IDLE</div>
+      </section>
+
+      <div class="grid-main">
+        <section class="panel control-panel">
+          <div class="section-head"><div><span class="eyebrow">01 / OPERACIÓN</span><h2>Master control</h2></div><span class="mini-label" id="selected-label">Q01 + Q02</span></div>
+          <div class="timeline"><div class="timeline-label"><span id="timecode">00:00:00</span><span id="duration">SIN DURACIÓN</span></div><div class="track"><div id="progress"></div></div></div>
+          <div class="controls"><button data-action="DISTRIBUTE" class="button ghost">↓ Distribuir</button><button data-action="PREPARE" class="button ghost">◉ Preparar</button><button data-action="PLAY" class="button primary">▶ PLAY</button><button data-action="PAUSE" class="button ghost">Ⅱ Pausa</button><button data-action="RESUME" class="button ghost">↗ Reanudar</button><button data-action="RESYNC" class="button ghost">⟳ Resync</button></div>
+          <div class="selection"><span class="eyebrow">VISOR / SELECCIÓN</span><div id="selection-buttons"></div></div>
+          <div class="emergency"><span class="eyebrow">ACCIONES DE EMERGENCIA · MANTENER 1 S</span><div><button data-hold="STOP" class="button danger">■ STOP ALL</button><button data-hold="LOBBY" class="button danger-outline">↩ LOBBY ALL</button><button data-hold="RESYNC" class="button danger-outline">⟳ RESYNC ALL</button><button class="button disabled" disabled title="AUDIO PA se integra tras validar el núcleo VR">MUTE PA · PRÓXIMA FASE</button></div></div>
+        </section>
+
+        <aside class="panel preflight"><div class="section-head"><div><span class="eyebrow">02 / VERIFICACIÓN</span><h2>Pre-flight</h2></div><span id="preflight-badge" class="badge blocked">BLOQUEADO</span></div><p class="hint">Verificación técnica del prototipo. La red, el audio y la sincronía física requieren una prueba en el lugar antes de operar un show.</p><div id="checks"></div></aside>
+      </div>
+
+      <section class="panel fleet"><div class="section-head"><div><span class="eyebrow">03 / FLOTA</span><h2>Quest</h2></div><span class="mini-label">ÚLTIMA TELEMETRÍA VISIBLE</span></div><div id="devices" class="device-grid"></div></section>
+
+      <section class="panel setup"><div class="section-head"><div><span class="eyebrow">04 / PREPARACIÓN</span><h2>Experiencia</h2></div><span class="mini-label">ARCHIVOS LOCALES EN LA MAC</span></div><p class="hint">Copiá el video a <code>app/data/content/</code>. Registrar una experiencia calcula el SHA-256 antes de distribuirla.</p><form id="experience-form"><label>Evento<input name="eventName" placeholder="AMPER — 50 AÑOS" required></label><label>Experiencia<input name="name" placeholder="EXPANSIÓN" required></label><label>Video VR<select name="file" id="files" required><option value="">Seleccionar archivo…</option></select></label><label>Duración (segundos)<input name="durationSeconds" type="number" min="0" placeholder="Opcional"></label><button class="button ghost" type="submit">Registrar experiencia</button><button class="button text" type="button" id="refresh-files">↻ Actualizar archivos</button></form></section>
+    </main>
+    <footer><span>OTRORAYO / VR CONTROL</span><span>PROTOTIPO LOCAL · LA SINCRONÍA AÚN REQUIERE VALIDACIÓN EN QUEST 3S</span></footer>
+  </div>
+  <div id="toast" role="alert"></div>
+  <script type="module" src="/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="dark" />
+    <meta name="robots" content="noindex" />
+    <title>OTRORAYO — Cuatro direcciones</title>
+    <link rel="icon" href="assets/icons/otrorayo-profile.jpg" />
+    <link rel="stylesheet" href="direcciones.css" />
+    <script src="direction-prisma.js" defer></script>
+    <script src="direction-orbita.js" defer></script>
+    <script src="direction-pulso.js" defer></script>
+    <script src="direcciones.js" defer></script>
+  </head>
+  <body>
+    <div id="comparison">
+      <header class="review-header">
+        <a class="brand" href="index.html" aria-label="Volver a OTRORAYO"
+          ><img
+            src="assets/images/otrorayo-instagram.jpg"
+            width="56"
+            height="56"
+            alt=""
+          />OTRORAYO</a
+        >
+        <span>Exploración visual <span class="index-dot">/</span> 01—04</span>
+      </header>
+      <main>
+        <div class="review-title">
+          <div>
+            <p class="eyebrow">Cuatro caminos. Una misma marca.</p>
+            <h1>Elegí la energía.</h1>
+          </div>
+          <p>Compará las escenas.<br />Abrí cada una para ver su entrada.</p>
+        </div>
+        <div class="directions-grid">
+          <article class="direction" data-direction="prisma">
+            <button
+              class="preview"
+              data-open="prisma"
+              aria-label="Ver entrada de 01, Prisma"
+            >
+              <canvas aria-hidden="true" data-scene="prisma"></canvas>
+              <span class="preview-index">01 / PROFUNDIDAD</span
+              ><span class="preview-action">Ver entrada <span>↗</span></span>
+            </button>
+            <div class="caption">
+              <div>
+                <h2>Prisma</h2>
+                <p>Cinco capas de color. Un cierre en blanco.</p>
+              </div>
+              <span class="direction-tag">Óptico · limpio</span>
+            </div>
+          </article>
+          <article class="direction" data-direction="orbita">
+            <button
+              class="preview"
+              data-open="orbita"
+              aria-label="Ver entrada de 02, Órbita"
+            >
+              <canvas aria-hidden="true" data-scene="orbita"></canvas>
+              <span class="preview-index">02 / ESCULTURA</span
+              ><span class="preview-action">Ver entrada <span>↗</span></span>
+            </button>
+            <div class="caption">
+              <div>
+                <h2>Órbita</h2>
+                <p>El logo suspendido entre anillos de luz.</p>
+              </div>
+              <span class="direction-tag">Espacial · preciso</span>
+            </div>
+          </article>
+          <article class="direction" data-direction="pulso">
+            <button
+              class="preview"
+              data-open="pulso"
+              aria-label="Ver entrada de 03, Pulso"
+            >
+              <canvas aria-hidden="true" data-scene="pulso"></canvas>
+              <span class="preview-index">03 / PARTÍCULAS</span
+              ><span class="preview-action">Ver entrada <span>↗</span></span>
+            </button>
+            <div class="caption">
+              <div>
+                <h2>Pulso</h2>
+                <p>Una nube de luz se reúne y forma el signo.</p>
+              </div>
+              <span class="direction-tag">Atmosférico · intenso</span>
+            </div>
+          </article>
+          <article class="direction" data-direction="interferencia">
+            <button
+              class="preview"
+              data-open="interferencia"
+              aria-label="Ver entrada de 04, Interferencia"
+            >
+              <canvas aria-hidden="true" data-scene="interferencia"></canvas>
+              <span class="preview-index">04 / SEÑAL</span
+              ><span class="preview-action">Ver entrada <span>↗</span></span>
+            </button>
+            <div class="caption">
+              <div>
+                <h2>Interferencia</h2>
+                <p>Cortes de señal. Color breve. Logo nítido.</p>
+              </div>
+              <span class="direction-tag">Digital · directo</span>
+            </div>
+          </article>
+        </div>
+      </main>
+      <footer class="review-footer">
+        <span>Logo original + tus cinco colores.</span
+        ><button id="motion-toggle" type="button" aria-pressed="false">
+          Pausar movimiento <span>Ⅱ</span>
+        </button>
+      </footer>
+      <noscript
+        ><p class="nojs">
+          Activá JavaScript para comparar las cuatro animaciones.
+        </p></noscript
+      >
+    </div>
+    <dialog id="direction-view" aria-labelledby="view-title">
+      <canvas id="large-scene" aria-hidden="true"></canvas>
+      <div class="view-tools">
+        <span id="view-label">01 / Prisma</span>
+        <div>
+          <button id="replay" type="button">Repetir entrada ↻</button
+          ><button id="close-view" type="button" aria-label="Cerrar propuesta">
+            Comparar <span>×</span>
+          </button>
+        </div>
+      </div>
+      <div class="concept-copy" id="concept-copy">
+        <p class="concept-lockup">
+          Experience design studio<br /><span
+            >Cada evento, su propio fenómeno</span
+          >
+        </p>
+        <h2 id="view-title">OTRORAYO</h2>
+        <p class="concept-promise">Hacemos que tu evento sea único.</p>
+        <a class="concept-cta" href="index.html#contacto"
+          >Contanos de tu evento <span>↗</span></a
+        >
+      </div>
+      <button id="skip-proposal" type="button">Saltar entrada ↗</button>
+      <div class="view-bottom">
+        <div class="direction-switch" aria-label="Cambiar propuesta">
+          <button data-switch="prisma" aria-label="01 Prisma">01</button
+          ><button data-switch="orbita" aria-label="02 Órbita">02</button
+          ><button data-switch="pulso" aria-label="03 Pulso">03</button
+          ><button data-switch="interferencia" aria-label="04 Interferencia">
+            04
+          </button>
+        </div>
+        <span id="view-note">Óptico · limpio</span>
+      </div>
+    </dialog>
+    <p id="review-status" class="visually-hidden" role="status"></p>
+  </body>
+</html>

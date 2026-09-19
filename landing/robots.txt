@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+Disallow: /api/
+Disallow: /direcciones.html
+Disallow: /tipografias.html
+
+Sitemap: https://otrorayo.com/sitemap.xml

@@ -1,0 +1,145 @@
+/* Four readable chapters in one continuous dark space. */
+body.journey-enabled {
+  background: #030407;
+}
+body.journey-enabled #ambient-particles {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100svh;
+  z-index: 0;
+  opacity: var(--journey-atmosphere, 1);
+}
+#journey-scene,
+#journey-surface {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100svh;
+  z-index: 1;
+  pointer-events: none;
+}
+body.intro-running #journey-surface {
+  opacity: 0;
+}
+body.journey-enabled main {
+  overflow-x: clip;
+  position: relative;
+  z-index: 2;
+}
+body.journey-enabled main > section {
+  position: relative;
+  top: auto;
+  width: 100%;
+  max-width: none;
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  isolation: auto;
+}
+body.journey-ready .hero-stage {
+  visibility: hidden;
+}
+body.journey-enabled .footer {
+  position: relative;
+  z-index: 3;
+  background: #030407;
+}
+body.intro-running.intro-seamless #journey-scene {
+  opacity: var(--intro-logo, 0);
+}
+body.journey-enabled #experiencias {
+  height: 112svh;
+  min-height: 870px;
+  overflow: visible;
+}
+body.journey-enabled .vr-copy {
+  top: 19%;
+  max-width: 550px;
+}
+body.journey-enabled .vr-copy h2 {
+  font-size: clamp(56px, 6.2vw, 90px);
+  line-height: 1;
+  letter-spacing: -0.055em;
+}
+body.journey-enabled .vr-copy > p {
+  text-shadow: 0 2px 14px #000;
+}
+body.journey-enabled .vr-art,
+body.journey-enabled .vr-scene-controls {
+  display: none !important;
+}
+body.journey-enabled #invitacion {
+  padding-top: 100px;
+  padding-bottom: 150px;
+}
+body.journey-enabled #invitacion .section-heading {
+  position: relative;
+  z-index: 3;
+}
+body.journey-enabled .invitation-examples {
+  max-width: 1160px;
+  margin-top: 70px;
+  --spread: clamp(172px, 23vw, 320px);
+}
+body.journey-enabled .invitation-example {
+  margin-top: var(--journey-card-y, 0px);
+}
+body.journey-enabled #contacto {
+  min-height: 90svh;
+  align-content: center;
+  padding-top: 120px;
+  padding-bottom: 120px;
+}
+body.journey-enabled .contact-copy h2 {
+  font-size: clamp(60px, 6.8vw, 98px);
+  line-height: 1;
+  letter-spacing: -0.06em;
+}
+body.journey-enabled .contact-launch {
+  position: relative;
+  z-index: 2;
+}
+body.journey-enabled :is(.vr-copy, .contact-copy, .invitation-intro) {
+  text-shadow: 0 3px 35px #030407;
+}
+@media (max-width: 767px) {
+  body.journey-enabled #experiencias {
+    height: 110svh;
+    min-height: 850px;
+  }
+  body.journey-enabled .vr-copy {
+    top: 100px;
+  }
+  body.journey-enabled .vr-copy h2 {
+    font-size: 53px;
+  }
+  body.journey-enabled #invitacion {
+    padding-top: 72px;
+    padding-bottom: 100px;
+  }
+  body.journey-enabled .invitation-examples {
+    margin-top: 45px;
+  }
+  body.journey-enabled #contacto {
+    min-height: 92svh;
+    padding-top: 110px;
+    padding-bottom: 100px;
+  }
+  body.journey-enabled .contact-copy h2 {
+    font-size: 59px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  body.journey-enabled .invitation-example {
+    margin-top: 0;
+  }
+}
+@media print {
+  #journey-scene,
+  #journey-surface,
+  #ambient-particles {
+    display: none;
+  }
+}

@@ -1,0 +1,301 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="robots" content="noindex,nofollow" />
+    <meta name="theme-color" content="#050608" />
+    <title>Cuatro tipografías para OTRORAYO</title>
+    <link rel="stylesheet" href="font-options.css" />
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        background: #050608;
+        color: #f4f5f6;
+        font-family: Arial, sans-serif;
+      }
+      a {
+        color: inherit;
+      }
+      header {
+        padding: 54px 5vw 32px;
+        max-width: 1400px;
+        margin: auto;
+      }
+      header a {
+        text-decoration: none;
+        font-size: 12px;
+        color: #aaa;
+      }
+      header h1 {
+        font-size: clamp(36px, 5vw, 68px);
+        font-weight: 500;
+        letter-spacing: -0.06em;
+        margin: 40px 0 14px;
+      }
+      header p {
+        color: #a9afb8;
+        max-width: 600px;
+        line-height: 1.5;
+        font-size: 15px;
+      }
+      main {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 20px;
+        max-width: 1400px;
+        margin: auto;
+        padding: 0 5vw 70px;
+      }
+      .type-card {
+        border: 1px solid #ffffff28;
+        border-radius: 22px;
+        background: radial-gradient(
+            ellipse at 80% 5%,
+            #15203066,
+            transparent 50%
+          ),
+          #090b10;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        min-height: 590px;
+      }
+      .card-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 24px 28px;
+        border-bottom: 1px solid #ffffff13;
+        font-family: Arial, sans-serif;
+        font-size: 14px;
+      }
+      .card-header span {
+        color: #c5cbd4;
+        font-size: 11px;
+      }
+      .recommended {
+        border-color: #ffffff68;
+      }
+      .type-sample {
+        padding: 38px 28px;
+        flex: 1;
+      }
+      .sample-name {
+        font-size: clamp(35px, 4.5vw, 68px);
+        font-weight: 600;
+        letter-spacing: -0.07em;
+        line-height: 1.1;
+        margin: 0 0 28px;
+      }
+      .sample-title {
+        font-size: clamp(33px, 3.3vw, 49px);
+        font-weight: 500;
+        letter-spacing: -0.055em;
+        line-height: 1.07;
+        margin: 0 0 26px;
+      }
+      .sample-label {
+        font-size: 14px;
+        line-height: 1.5;
+        color: #bbc2ca;
+      }
+      .sample-button {
+        display: inline-flex;
+        align-items: center;
+        gap: 20px;
+        border: 1px solid #ffffff40;
+        border-radius: 15px;
+        background: #ffffff05;
+        padding: 18px 21px;
+        margin-top: 17px;
+        font-size: 13px;
+        position: relative;
+      }
+      .sample-button:after {
+        content: "";
+        position: absolute;
+        bottom: -1px;
+        left: 20%;
+        right: 20%;
+        height: 2px;
+        background: linear-gradient(
+          90deg,
+          #ee3825 0% 20%,
+          #ff6b0b 20% 40%,
+          #fec306 40% 60%,
+          #77bd20 60% 80%,
+          #188ad9 80%
+        );
+      }
+      .card-footer {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 20px;
+        padding: 22px 28px;
+        border-top: 1px solid #ffffff13;
+        font:
+          12px Arial,
+          sans-serif;
+        color: #a2a8b1;
+      }
+      .card-footer a {
+        white-space: nowrap;
+        color: white;
+        padding: 10px 0;
+        text-underline-offset: 5px;
+      }
+      .space {
+        font-family: "Space Grotesk", Arial, sans-serif;
+      }
+      .sora {
+        font-family: "Sora", Arial, sans-serif;
+      }
+      .manrope {
+        font-family: "Manrope", Arial, sans-serif;
+      }
+      .syne {
+        font-family: "Manrope", Arial, sans-serif;
+      }
+      .syne :is(.sample-name, .sample-title) {
+        font-family: "Syne", Arial, sans-serif;
+      }
+      .syne .sample-name {
+        font-size: clamp(30px, 3.7vw, 55px);
+      }
+      a:focus-visible {
+        outline: 2px solid white;
+        outline-offset: 5px;
+      }
+      @media (max-width: 780px) {
+        header {
+          padding: 30px 22px;
+        }
+        header h1 {
+          margin-top: 30px;
+        }
+        main {
+          display: block;
+          padding: 0 16px 40px;
+        }
+        .type-card {
+          margin-bottom: 20px;
+          min-height: 535px;
+        }
+        .sample-name {
+          font-size: 48px;
+        }
+        .sample-title {
+          font-size: 40px;
+        }
+        .syne .sample-name {
+          font-size: 40px;
+        }
+        .card-footer {
+          font-size: 11px;
+        }
+        .type-sample {
+          padding: 32px 24px;
+        }
+        .card-header,
+        .card-footer {
+          padding-inline: 24px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <a href="/">← Volver a OTRORAYO</a>
+      <h1>La misma energía.<br />Cuatro voces.</h1>
+      <p>
+        Mi primera opción es Space Grotesk. Probá cada una sobre la web completa
+        antes de elegir.
+      </p>
+    </header>
+    <main>
+      <article class="type-card recommended space">
+        <div class="card-header">
+          <strong>01 · Space Grotesk</strong><span>RECOMENDADA</span>
+        </div>
+        <div class="type-sample">
+          <p class="sample-name">OTRORAYO</p>
+          <h2 class="sample-title">Cada evento,<br />su propio fenómeno.</h2>
+          <p class="sample-label">
+            Experience design studio<br />Una experiencia hecha para vos.
+          </p>
+          <span class="sample-button"
+            >Contanos de tu evento <span>↗</span></span
+          >
+        </div>
+        <div class="card-footer">
+          <span>Tecnológica, con personalidad.</span
+          ><a href="/?typeface=space-grotesk&amp;intro=1"
+            >Probar en la web ↗</a
+          >
+        </div>
+      </article>
+      <article class="type-card sora">
+        <div class="card-header">
+          <strong>02 · Sora</strong><span>FUTURISTA</span>
+        </div>
+        <div class="type-sample">
+          <p class="sample-name">OTRORAYO</p>
+          <h2 class="sample-title">Cada evento,<br />su propio fenómeno.</h2>
+          <p class="sample-label">
+            Experience design studio<br />Una experiencia hecha para vos.
+          </p>
+          <span class="sample-button"
+            >Contanos de tu evento <span>↗</span></span
+          >
+        </div>
+        <div class="card-footer">
+          <span>Geométrica y contundente.</span
+          ><a href="/?typeface=sora&amp;intro=1">Probar en la web ↗</a>
+        </div>
+      </article>
+      <article class="type-card manrope">
+        <div class="card-header">
+          <strong>03 · Manrope</strong><span>MINIMALISTA</span>
+        </div>
+        <div class="type-sample">
+          <p class="sample-name">OTRORAYO</p>
+          <h2 class="sample-title">Cada evento,<br />su propio fenómeno.</h2>
+          <p class="sample-label">
+            Experience design studio<br />Una experiencia hecha para vos.
+          </p>
+          <span class="sample-button"
+            >Contanos de tu evento <span>↗</span></span
+          >
+        </div>
+        <div class="card-footer">
+          <span>Limpia, sobria y fácil de leer.</span
+          ><a href="/?typeface=manrope&amp;intro=1">Probar en la web ↗</a>
+        </div>
+      </article>
+      <article class="type-card syne">
+        <div class="card-header">
+          <strong>04 · Syne + Manrope</strong><span>EDITORIAL</span>
+        </div>
+        <div class="type-sample">
+          <p class="sample-name">OTRORAYO</p>
+          <h2 class="sample-title">Cada evento,<br />su propio fenómeno.</h2>
+          <p class="sample-label">
+            Experience design studio<br />Una experiencia hecha para vos.
+          </p>
+          <span class="sample-button"
+            >Contanos de tu evento <span>↗</span></span
+          >
+        </div>
+        <div class="card-footer">
+          <span>Títulos expresivos, lectura serena.</span
+          ><a href="/?typeface=syne&amp;intro=1">Probar en la web ↗</a>
+        </div>
+      </article>
+    </main>
+  </body>
+</html>

@@ -1,0 +1,498 @@
+/* Prisma líquido: luz en la escena, interfaz blanca y serena. */
+.hero {
+  isolation: isolate;
+  background: #030407;
+  min-height: 620px;
+}
+#ambient-particles {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  opacity: 1;
+  mix-blend-mode: normal;
+  pointer-events: none;
+}
+.hero-stage {
+  z-index: 1;
+  top: 0;
+  height: calc(100% - 280px);
+}
+.hero-wordmark {
+  z-index: 2;
+}
+.hero-coordinate {
+  z-index: 2;
+}
+.scene-fallback {
+  opacity: 0.9;
+}
+.intro.is-leaving #intro-scene {
+  transform: none;
+}
+.vr-section {
+  position: relative;
+  display: block;
+  isolation: isolate;
+  width: 100%;
+  max-width: none;
+  height: clamp(780px, 105svh, 1050px);
+  min-height: 780px;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background: #030509;
+  border-block: 1px solid #ffffff14;
+}
+.vr-copy {
+  position: absolute;
+  z-index: 3;
+  left: var(--page);
+  top: 74px;
+  max-width: 490px;
+}
+.vr-copy h2 {
+  font-size: clamp(52px, 5.6vw, 82px);
+}
+.vr-copy > p {
+  margin-top: 25px;
+  max-width: 340px;
+  color: #b7bdc6;
+}
+.vr-art {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  transform: none;
+  background: #030509;
+  perspective: none;
+  overflow: hidden;
+}
+.vr-art::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(90deg, #030509c7, #03050960 31%, #03050900 66%),
+    linear-gradient(180deg, #030509aa, #03050900 40%, #03050900 82%, #030509a8);
+}
+#event-scene {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.event-ready .portal-tunnel {
+  display: none;
+}
+.vr-art:not(.event-ready) .portal-tunnel {
+  margin-left: 30%;
+}
+.vr-scene-controls {
+  position: absolute;
+  z-index: 4;
+  bottom: 34px;
+  left: var(--page);
+  right: var(--page);
+  display: none;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 20px;
+}
+.vr-section:has(.event-ready) .vr-scene-controls {
+  display: flex;
+}
+.vr-scene-controls > div:first-child {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.scene-kicker {
+  font-size: 8px;
+  letter-spacing: 0.16em;
+  color: #808b98;
+}
+#event-mode {
+  font-size: 12px;
+  color: #d1d7df;
+}
+.vr-scene-buttons {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.vr-scene-buttons button {
+  min-height: 44px;
+  border: 1px solid #ffffff55;
+  border-radius: 24px;
+  background: #0c11196e;
+  -webkit-backdrop-filter: blur(14px);
+  backdrop-filter: blur(14px);
+  padding: 12px 18px;
+  font: inherit;
+  font-size: 11px;
+  color: #f5f5f1;
+  cursor: pointer;
+  transition:
+    border-color 0.2s,
+    background 0.2s;
+}
+.vr-scene-buttons button:hover {
+  border-color: #ffffffbb;
+  background: #ffffff0d;
+}
+.vr-scene-buttons button:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 4px;
+}
+body:not(.js-ready) .vr-scene-controls {
+  display: none;
+}
+@media (min-width: 768px) and (max-width: 1099px) {
+  .hero {
+    min-height: 650px;
+  }
+  .hero-stage {
+    height: calc(100% - 280px);
+  }
+  .vr-copy {
+    max-width: 350px;
+  }
+  .vr-copy h2 {
+    font-size: 61px;
+  }
+}
+@media (max-width: 767px) {
+  .hero {
+    min-height: 690px;
+  }
+  .hero-stage {
+    top: 55px;
+    height: calc(100% - 315px);
+  }
+  .vr-section {
+    height: 910px;
+    min-height: 910px;
+  }
+  .vr-copy {
+    top: 48px;
+    left: var(--page);
+    right: var(--page);
+    max-width: none;
+  }
+  .vr-copy h2 {
+    font-size: 48px;
+    line-height: 1.02;
+    letter-spacing: -2.4px;
+  }
+  .vr-copy > p {
+    margin-top: 20px;
+    font-size: 12px;
+    line-height: 1.6;
+  }
+  .vr-copy .text-link {
+    margin-top: 16px;
+    font-size: 12px;
+  }
+  .vr-art::after {
+    background: linear-gradient(
+      180deg,
+      #030509f5,
+      #030509c7 24%,
+      #03050915 47%,
+      #03050900 72%,
+      #030509cc
+    );
+  }
+  .vr-scene-controls {
+    bottom: 24px;
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 17px;
+  }
+  .vr-scene-controls > div:first-child {
+    flex-direction: row;
+    align-items: center;
+    gap: 12px;
+  }
+  .vr-scene-buttons {
+    justify-content: space-between;
+    width: 100%;
+  }
+  .vr-scene-buttons button {
+    padding-inline: 16px;
+  }
+  #event-mode {
+    font-size: 10px;
+  }
+  .scene-kicker {
+    font-size: 7px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .vr-scene-buttons button {
+    transition: none;
+  }
+}
+@media print {
+  .vr-art,
+  .vr-scene-controls {
+    display: none;
+  }
+  .vr-section {
+    height: auto;
+    min-height: 0;
+    padding: 30px;
+  }
+  .vr-copy {
+    position: static;
+    color: #000;
+  }
+}
+
+/* Energía → identidad. Palabras recortadas, sin librería de animación. */
+.intro {
+  animation-duration: 8.1s;
+}
+.intro-copy {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+}
+.intro-phrase {
+  position: absolute;
+  top: 67%;
+  left: 50%;
+  width: calc(100% - 48px);
+  max-width: 1120px;
+  text-align: center;
+  transform: translate(-50%, -50%);
+  color: #f4f6f7;
+  line-height: 1.16;
+  letter-spacing: -0.035em;
+  font-weight: 400;
+}
+.intro-phrase--studio {
+  font-size: clamp(22px, 3.2vw, 45px);
+}
+.intro-phrase--promise {
+  font-size: clamp(30px, 4.6vw, 64px);
+  max-width: 1000px;
+}
+.intro-word-clip {
+  display: inline-block;
+  vertical-align: top;
+  overflow: clip;
+  padding: 0.12em 0.015em;
+  margin: -0.12em -0.015em;
+  perspective: 600px;
+}
+.intro-word-ink {
+  display: block;
+  opacity: 0;
+  transform: translateY(115%) rotateX(-26deg);
+  transform-origin: 50% 100%;
+  filter: blur(4px);
+  transition:
+    transform 650ms cubic-bezier(0.16, 1, 0.3, 1),
+    opacity 420ms ease,
+    filter 550ms ease;
+  transition-delay: calc(var(--word-index) * 35ms);
+  will-change: transform, opacity;
+}
+.intro-phrase.is-active .intro-word-ink {
+  opacity: 1;
+  transform: none;
+  filter: blur(0);
+}
+.intro-phrase.is-past .intro-word-ink {
+  opacity: 0;
+  transform: translateY(-110%) rotateX(15deg);
+  filter: blur(3px);
+  transition-duration: 340ms;
+  transition-delay: calc(var(--word-index) * 18ms);
+}
+.intro-phrase--wordmark {
+  top: var(--arrival-wordmark-top, 70%);
+  transform: translateX(-50%);
+  max-width: none;
+  width: 100%;
+  font-size: var(--arrival-wordmark-size, 16.8vw);
+  line-height: var(--arrival-wordmark-height, 0.76);
+  font-weight: 600;
+  letter-spacing: -0.075em;
+  padding-right: 0.075em;
+}
+.intro-phrase--wordmark .intro-word-clip {
+  padding: 0.2em 0.09em;
+  margin: -0.2em -0.09em;
+}
+.intro.is-quick .intro-copy,
+.intro.is-reduced .intro-copy {
+  display: none;
+}
+.intro-complete .hero-wordmark {
+  animation: none;
+}
+.brand-lockup {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  top: 28px;
+  max-width: 380px;
+  line-height: 1.2;
+}
+.brand-lockup span:first-child {
+  font-size: clamp(13px, 1.1vw, 17px);
+  color: #c9d1dc;
+  letter-spacing: 0.025em;
+}
+.brand-lockup span:last-child {
+  font-size: clamp(19px, 1.65vw, 25px);
+  font-weight: 400;
+  color: #f0f2f6;
+  letter-spacing: -0.035em;
+  max-width: 350px;
+}
+.invitation-example {
+  cursor: default;
+}
+@media (max-width: 767px) {
+  .brand-lockup {
+    top: 22px;
+    gap: 7px;
+    max-width: calc(100% - 44px);
+  }
+  .brand-lockup span:first-child {
+    font-size: 12px;
+  }
+  .brand-lockup span:last-child {
+    font-size: 21px;
+    max-width: 300px;
+  }
+  .intro-phrase--promise {
+    max-width: 360px;
+    top: 68%;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .intro-word-ink {
+    transition: none;
+    transform: none;
+    filter: none;
+  }
+}
+
+/* One continuous arrival: reveal the actual hero under the departing tunnel. */
+.intro.is-seamless {
+  background: transparent;
+}
+.intro.is-seamless::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: #000;
+  opacity: var(--intro-veil, 1);
+}
+.intro-running.intro-seamless #ambient-particles {
+  visibility: visible;
+}
+.intro-running.intro-seamless .hero-stage {
+  opacity: var(--intro-logo, 0);
+}
+.intro-running.intro-seamless
+  :is(
+    .site-header,
+    .brand-lockup,
+    .hero-coordinate,
+    .hero-actions,
+    #hero-title,
+    .hero-bottom
+  ) {
+  opacity: var(--intro-ui, 0);
+}
+.intro-running.intro-seamless .hero-wordmark {
+  opacity: var(--intro-wordmark, 0);
+  transform: translate3d(0, var(--intro-wordmark-y, 32px), 0);
+}
+.intro.is-seamless #skip-intro {
+  opacity: var(--intro-veil, 1);
+}
+
+.intro-phrase {
+  top: 66%;
+  color: #fff;
+  text-shadow:
+    0 2px 24px #000,
+    0 0 65px #000;
+}
+.intro-phrase--studio {
+  font-size: clamp(30px, 4.1vw, 58px);
+  font-weight: 500;
+}
+.intro-phrase--promise {
+  font-size: clamp(37px, 5.1vw, 72px);
+  font-weight: 500;
+}
+.intro-word-ink {
+  transform: translateY(105%);
+  filter: none;
+  transition:
+    transform 430ms cubic-bezier(0.16, 1, 0.3, 1),
+    opacity 230ms ease;
+  transition-delay: calc(var(--word-index) * 22ms);
+}
+.intro-phrase.is-past .intro-word-ink {
+  filter: none;
+  transform: translateY(-105%);
+  transition-duration: 260ms;
+  transition-delay: calc(var(--word-index) * 12ms);
+}
+@media (max-height: 600px) and (min-width: 768px) {
+  .intro-phrase {
+    top: 71%;
+  }
+  .intro-phrase--studio {
+    font-size: 32px;
+  }
+  .intro-phrase--promise {
+    font-size: 40px;
+  }
+}
+
+/* Four full-width scenes. Each one covers the previous scene as it arrives. */
+.scene-stop {
+  height: 0;
+  pointer-events: none;
+}
+@media screen and (prefers-reduced-motion: no-preference) {
+  main.scene-covers > section {
+    position: sticky;
+    top: var(--scene-top, 0px);
+    z-index: var(--scene-order, 1);
+    max-width: none;
+    width: 100%;
+    background-color: #030407;
+    box-shadow: 0 -35px 75px #0008;
+  }
+  main.scene-covers > section:not(:first-of-type) {
+    border-radius: 32px 32px 0 0;
+    border-top: 1px solid #ffffff24;
+  }
+  main.scene-covers > .vr-section {
+    background-color: #030509;
+  }
+  main.scene-covers > .contact {
+    min-height: min(660px, 80svh);
+    align-content: center;
+  }
+}
+@media screen and (max-width: 767px) and (prefers-reduced-motion: no-preference) {
+  main.scene-covers > section:not(:first-of-type) {
+    border-radius: 22px 22px 0 0;
+  }
+}

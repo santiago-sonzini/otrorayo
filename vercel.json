@@ -1,0 +1,25 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "framework": null,
+  "buildCommand": "python3 scripts/build_static.py",
+  "outputDirectory": "public",
+  "functions": {
+    "api/contact.py": {
+      "maxDuration": 60,
+      "excludeFiles": "{app/**,landing/**,public/**,scripts/**,server/tests/**,**/.env*,**/__pycache__/**,**/*.md}"
+    }
+  },
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        { "key": "X-Content-Type-Options", "value": "nosniff" },
+        { "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" }
+      ]
+    },
+    {
+      "source": "/api/(.*)",
+      "headers": [{ "key": "Cache-Control", "value": "no-store" }]
+    }
+  ]
+}

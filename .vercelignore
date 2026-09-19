@@ -1,0 +1,12 @@
+.git
+.vercel
+.env
+.env.*
+**/.env
+**/.env.*
+**/node_modules
+**/__pycache__
+**/*.pyc
+**/.DS_Store
+app/data
+public

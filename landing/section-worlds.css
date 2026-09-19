@@ -1,0 +1,426 @@
+/* Four distinct art directions, sharing the same type, mark and five colours. */
+main > #experiencias.vr-section {
+  background: radial-gradient(
+    ellipse at 78% 45%,
+    #143fc6 0,
+    #101e72 40%,
+    #090f35 78%
+  );
+  min-height: 850px;
+  height: 100svh;
+  max-height: 1080px;
+  border-radius: 0;
+  overflow: hidden;
+}
+#experiencias .vr-copy {
+  top: 15%;
+  width: 43%;
+  max-width: 640px;
+  z-index: 4;
+}
+#experiencias .eyebrow {
+  color: #b2c2ff;
+  letter-spacing: 0.2em;
+}
+#experiencias .vr-copy h2 {
+  font-size: clamp(60px, 7.2vw, 108px);
+  line-height: 0.98;
+  letter-spacing: -0.065em;
+  margin-top: 34px;
+}
+#experiencias .vr-copy > p {
+  color: #c4cdef;
+  margin-top: 32px;
+}
+#experiencias .vr-copy .text-link {
+  margin-top: 28px;
+}
+#experiencias .vr-art {
+  inset: 12% -15% 10% 40%;
+  width: 75%;
+  height: 78%;
+  border: 1px solid #b6cdff60;
+  border-radius: 50%;
+  transform: rotate(-9deg);
+  box-shadow:
+    -10px 8px 0 #223db728,
+    -24px 18px 0 #7999ff0e,
+    0 0 100px #4767ff28;
+}
+#experiencias .vr-art::after {
+  background:
+    linear-gradient(95deg, #070d3990, transparent 35%),
+    radial-gradient(ellipse, transparent 40%, #050a3790);
+  border-radius: inherit;
+  box-shadow: inset 0 0 60px #8ab6ff26;
+}
+#experiencias #event-scene {
+  transform: rotate(9deg) scale(1.22);
+}
+#experiencias .vr-scene-controls {
+  bottom: 44px;
+}
+#experiencias .scene-kicker {
+  color: #aabaff;
+}
+#experiencias .vr-scene-buttons button {
+  background: #06103388;
+}
+.world-coordinate {
+  position: absolute;
+  left: var(--page);
+  bottom: 135px;
+  color: #8498e9;
+  font-size: 11px;
+  letter-spacing: 0.18em;
+}
+.world-coordinate::before {
+  content: "";
+  display: inline-block;
+  width: 44px;
+  height: 1px;
+  background: #9eafff;
+  margin-right: 16px;
+  vertical-align: middle;
+}
+
+/* A light editorial gallery — the original invitations supply all imagery. */
+main > #invitacion.invitation-section {
+  background: #e9e7df;
+  color: #17191b;
+  border-radius: 0;
+  padding-top: 100px;
+  padding-bottom: 64px;
+  overflow: clip;
+}
+#invitacion .section-heading {
+  align-items: end;
+  gap: 40px;
+  margin-bottom: 0;
+}
+#invitacion .eyebrow {
+  color: #626360;
+  letter-spacing: 0.18em;
+}
+#invitacion h2 {
+  font-size: clamp(58px, 6.9vw, 102px);
+  line-height: 0.97;
+  letter-spacing: -0.07em;
+}
+#invitacion .invitation-intro {
+  max-width: 300px;
+  padding-bottom: 6px;
+}
+#invitacion .invitation-intro p {
+  color: #555853;
+}
+#invitacion .text-link {
+  color: #17191b;
+  background: transparent;
+  border-color: #7e817d;
+}
+#invitacion .text-link::after {
+  opacity: 0.9;
+}
+#invitacion .invitation-examples {
+  display: grid;
+  grid-template-columns: 1fr 1.12fr 1fr;
+  align-items: start;
+  gap: clamp(24px, 4.4vw, 72px);
+  height: auto;
+  min-height: 0;
+  max-width: 1120px;
+  margin: 80px auto 42px;
+  padding: 0 12px 35px;
+  perspective: none;
+  transform: none;
+  overflow: visible;
+}
+#invitacion .invitation-examples .invitation-example {
+  position: relative;
+  left: auto;
+  top: auto;
+  width: 100%;
+  transform: translateY(var(--editorial-shift, 0px));
+  transform-style: flat;
+  transition: none;
+}
+#invitacion .invitation-example:nth-child(1) {
+  margin-top: 85px;
+  --gallery-depth: 1;
+}
+#invitacion .invitation-example:nth-child(2) {
+  --gallery-depth: -0.6;
+}
+#invitacion .invitation-example:nth-child(3) {
+  margin-top: 155px;
+  --gallery-depth: 0.6;
+}
+#invitacion .example-stage {
+  overflow: visible;
+  height: auto;
+  min-height: 0;
+  background: none;
+  border: 0;
+  padding: 0;
+}
+#invitacion .example-stage::before,
+#invitacion .example-stage::after {
+  display: none;
+}
+#invitacion .example-phone {
+  width: 100%;
+  max-width: none;
+  padding: 0;
+  border: 1px solid #ffffff;
+  border-radius: 6px;
+  background: white;
+  box-shadow: 0 12px 28px #2929231c;
+  transform: none;
+  overflow: hidden;
+}
+#invitacion .example-phone img {
+  width: 100%;
+  height: auto;
+  border-radius: 5px;
+  display: block;
+}
+#invitacion .example-caption {
+  display: flex;
+  align-items: baseline;
+  gap: 16px;
+  color: #202321;
+  margin-top: 20px;
+  transform: none;
+}
+#invitacion .example-caption::before {
+  content: attr(data-edition);
+  color: #7b7d76;
+  font-size: 10px;
+}
+#invitacion .example-caption h3 {
+  font-size: 16px;
+  font-weight: 500;
+  letter-spacing: -0.04em;
+}
+#invitacion .example-caption h3 span {
+  color: #63665f;
+}
+#invitacion .service-note {
+  text-align: left;
+  color: #61645d;
+  border-top: 1px solid #bfc2b8;
+  padding-top: 24px;
+  margin-top: 25px;
+  max-width: none;
+}
+#invitacion .gallery-hint {
+  color: #53564f;
+}
+
+/* The final scene is a light experiment, with the action on a glass panel. */
+main > #contacto.contact {
+  background: #050608;
+  min-height: 900px;
+  height: 100svh;
+  max-height: 1150px;
+  display: block;
+  align-content: start;
+  position: relative;
+  overflow: hidden;
+  padding-top: 100px;
+  border-radius: 0;
+  isolation: isolate;
+}
+.contact-prism {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  pointer-events: none;
+}
+#contacto .contact-copy {
+  position: relative;
+  z-index: 2;
+  max-width: 920px;
+}
+#contacto .contact-copy h2 {
+  font-size: clamp(64px, 8.2vw, 126px);
+  line-height: 0.96;
+  letter-spacing: -0.065em;
+}
+#contacto .contact-copy > p {
+  display: none;
+}
+#contacto .contact-copy .text-link {
+  margin-top: 26px;
+  font-size: 12px;
+}
+#contacto .contact-launch {
+  position: absolute;
+  right: 9%;
+  bottom: 16%;
+  width: min(420px, 39%);
+  min-height: 230px;
+  gap: 20px;
+  padding: 32px;
+  background: linear-gradient(135deg, #ffffff10, #10172388 60%, #ffffff08);
+  border: 1px solid #ffffff42;
+  border-radius: 18px;
+  backdrop-filter: blur(18px);
+  box-shadow:
+    inset 0 1px #ffffff25,
+    0 30px 80px #0006;
+}
+#contacto .contact-launch > .button {
+  width: 100%;
+  min-width: 0;
+  background: #0c1018b0;
+  font-size: 15px;
+}
+#contacto .contact-launch > span {
+  color: #c0c4ca;
+  font-size: 11px;
+  text-align: center;
+}
+.contact-prism .spectral-rays {
+  transform-origin: 640px 480px;
+  transform: rotate(var(--prism-angle, 0deg));
+}
+@media (min-width: 1600px) {
+  #invitacion .section-heading,
+  #invitacion .service-note {
+    max-width: 1440px;
+    margin-inline: auto;
+  }
+}
+@media (max-width: 1099px) {
+  #experiencias .vr-copy {
+    width: 52%;
+  }
+  #experiencias .vr-art {
+    left: 35%;
+    width: 85%;
+  }
+  #contacto .contact-launch {
+    right: 6%;
+    width: 44%;
+  }
+}
+@media (max-width: 767px) {
+  main > #experiencias.vr-section {
+    height: 1000px;
+    min-height: 1000px;
+    max-height: none;
+  }
+  #experiencias .vr-copy {
+    top: 58px;
+    width: auto;
+    right: var(--page);
+    max-width: none;
+  }
+  #experiencias .vr-copy h2 {
+    font-size: clamp(58px, 12.5vw, 80px);
+    max-width: 370px;
+    margin-top: 24px;
+  }
+  #experiencias .vr-copy > p {
+    margin-top: 20px;
+  }
+  #experiencias .vr-art {
+    inset: 46% -25% 12% -10%;
+    width: 135%;
+    height: 44%;
+  }
+  #experiencias #event-scene {
+    transform: rotate(9deg) scale(1.15);
+  }
+  #experiencias .world-coordinate {
+    display: none;
+  }
+  #experiencias .vr-scene-controls {
+    bottom: 32px;
+  }
+  main > #invitacion.invitation-section {
+    padding-top: 64px;
+    padding-bottom: 44px;
+  }
+  #invitacion .section-heading {
+    display: block;
+  }
+  #invitacion h2 {
+    font-size: clamp(55px, 12.5vw, 78px);
+  }
+  #invitacion .invitation-intro {
+    max-width: none;
+    margin-top: 28px;
+  }
+  #invitacion .invitation-intro p {
+    display: none;
+  }
+  #invitacion .invitation-examples {
+    display: flex;
+    gap: 22px;
+    margin: 34px calc(-1 * var(--page)) 0;
+    padding: 12px var(--page) 28px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-snap-type: x mandatory;
+    scroll-padding-inline: var(--page);
+  }
+  #invitacion .invitation-examples .invitation-example {
+    flex: 0 0 73%;
+    width: 73%;
+    margin-top: 0;
+    transform: none;
+    scroll-snap-align: center;
+  }
+  #invitacion .invitation-example:nth-child(2) {
+    margin-top: 32px;
+  }
+  #invitacion .invitation-example:nth-child(3) {
+    margin-top: 14px;
+  }
+  #invitacion .example-caption {
+    gap: 12px;
+  }
+  #invitacion .example-caption h3 {
+    font-size: 15px;
+  }
+  #invitacion .service-note {
+    font-size: 10px;
+    line-height: 1.7;
+  }
+  main > #contacto.contact {
+    height: 910px;
+    min-height: 910px;
+    max-height: none;
+    padding-top: 66px;
+  }
+  #contacto .contact-copy h2 {
+    font-size: clamp(57px, 12.4vw, 76px);
+  }
+  #contacto .contact-launch {
+    right: var(--page);
+    left: var(--page);
+    bottom: 70px;
+    width: auto;
+    min-height: 190px;
+    padding: 26px;
+  }
+  .contact-prism {
+    width: 1050px;
+    max-width: none;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  #invitacion .invitation-examples .invitation-example {
+    transform: none;
+  }
+  .contact-prism .spectral-rays {
+    transform: none;
+  }
+}
