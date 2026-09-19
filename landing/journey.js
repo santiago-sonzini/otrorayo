@@ -70,101 +70,104 @@
         schedule();
       }
       function environment(p) {
-        const visible = blend(0.16, 0.7, p) * (1 - blend(2.45, 3, p) * 0.6);
+        const visible = blend(0.16, 0.72, p);
         if (visible < 0.001) return;
         const compact = width < 768;
-        const arrival = blend(0, 1, p),
-          gallery = blend(1, 2, p),
-          closing = blend(2, 3, p);
+        const arrival = blend(0, 1, p);
+        const gallery = blend(1, 2, p);
+        const closing = blend(2, 3, p);
         const cx =
-          mix(width * 0.5, width * (compact ? 0.54 : 0.7), arrival) -
-          gallery * width * 0.19 +
-          closing * width * 0.19;
-        const cy = height * (compact ? 0.61 : 0.54);
-        const focal = Math.min(width * (compact ? 1.03 : 0.74), height * 1.02);
-        const travel = p * 11.5;
-        const yaw = Math.sin(p * 1.55) * 0.095 + pointer.x * 0.015;
-        const camX = Math.sin(p * 1.4) * 1.1;
-        const projection = ({ x, y, z }) => {
-          const dx = x - camX,
-            dz = z - travel;
-          const rx = dx * Math.cos(yaw) - dz * Math.sin(yaw),
-            rz = dx * Math.sin(yaw) + dz * Math.cos(yaw);
+          width *
+          (0.5 +
+            arrival * (compact ? 0.04 : 0.2) -
+            gallery * 0.16 +
+            closing * 0.12);
+        const cy = height * (0.57 + closing * 0.12);
+        const focal = Math.min(width * (compact ? 1.2 : 0.8), height * 1.05);
+        const travel = p * 10;
+        // Both ribbons share one world-space curve. Scroll advances the camera
+        // along it; time only adds a slow current and travelling illumination.
+        const center = (z) => Math.sin(z * 0.065) * 1.3;
+        const camX = center(travel);
+        const yaw = Math.cos(travel * 0.065) * 0.065 + pointer.x * 0.012;
+        const project = (x, y, z) => {
+          const dx = x - camX;
+          const dz = z - travel;
+          const rx = dx * Math.cos(yaw) - dz * Math.sin(yaw);
+          const depth = dx * Math.sin(yaw) + dz * Math.cos(yaw);
           return {
-            x: cx + (rx * focal) / Math.max(0.2, rz),
-            y: cy + ((y + pointer.y * 0.06) * focal) / Math.max(0.2, rz),
-            z: rz,
+            x: cx + (rx * focal) / Math.max(0.5, depth),
+            y: cy + ((y + pointer.y * 0.05) * focal) / Math.max(0.5, depth),
+            depth,
           };
         };
-        function line(vertices, color, opacity, lineWidth = 1) {
-          ctx.beginPath();
-          let started = false;
-          for (const v of vertices) {
-            const q = projection(v);
-            if (q.z < 0.65) {
-              started = false;
-              continue;
-            }
-            if (!started) {
-              ctx.moveTo(q.x, q.y);
-              started = true;
-            } else ctx.lineTo(q.x, q.y);
-          }
-          ctx.globalAlpha = opacity * visible;
-          ctx.strokeStyle = color;
-          ctx.lineWidth = lineWidth;
-          ctx.stroke();
-        }
         ctx.save();
         ctx.globalCompositeOperation = "screen";
-        // Fine longitudinal light strips converge in perspective; no particle cloud.
-        for (let band = 0; band < 5; band++) {
-          for (const side of [-1, 1]) {
-            const vertices = [];
-            for (let k = 0; k < 100; k++) {
-              const z = travel + 0.9 + k * 0.65;
-              const a =
-                side * (0.46 + band * 0.12) +
-                Math.sin(z * 0.11 + time * 0.09) * 0.025;
-              vertices.push({
-                x: Math.cos(a) * 4.48 * side,
-                y: Math.sin(a) * 3.5,
-                z,
-              });
+        ctx.lineCap = "round";
+        ctx.lineJoin = "round";
+        // A soft bloom, saturated tube and fine hot core, without white glare.
+        for (const side of [0, 1]) {
+          for (let band = 0; band < palette.length; band++) {
+            const samples = [];
+            for (let k = 0; k <= 96; k++) {
+              const distance = 1.2 + k * 0.55;
+              const z = travel + distance;
+              const angle =
+                -0.64 +
+                side * Math.PI +
+                z * 0.105 +
+                Math.sin(z * 0.09 - time * 0.14) * 0.16 +
+                (band - 2) * 0.045;
+              const radius = 4.5 + Math.sin(z * 0.13) * 0.45;
+              samples.push(
+                project(
+                  center(z) + Math.cos(angle) * radius,
+                  Math.sin(angle) * radius * 0.72,
+                  z,
+                ),
+              );
             }
-            line(vertices, palette[band], 0.04, 8);
-            line(vertices, palette[band], 0.26, 0.9);
-          }
-        }
-        ctx.restore();
-      }
-      function ending(p) {
-        const alpha = blend(2.28, 3, p);
-        if (alpha < 0.001) return;
-        const cx = width * (width < 768 ? 0.7 : 0.76),
-          cy = height * 0.58;
-        ctx.save();
-        ctx.globalCompositeOperation = "screen";
-        for (let side = 0; side < 2; side++) {
-          const sign = side ? 1 : -1;
-          for (let c = 0; c < 5; c++) {
-            ctx.beginPath();
-            ctx.moveTo(cx + sign * width * 0.035, cy + sign * height * 0.04);
-            ctx.bezierCurveTo(
-              cx + sign * width * 0.19,
-              cy + sign * height * 0.17,
-              cx + sign * width * 0.36,
-              cy + sign * height * 0.36 + (c - 2) * 17,
-              cx + sign * width * 0.6,
-              cy + sign * height * 0.6 + (c - 2) * 36,
-            );
-            ctx.strokeStyle = palette[c];
-            ctx.globalAlpha = alpha * 0.04;
-            ctx.lineWidth = 9;
-            ctx.stroke();
-            ctx.globalAlpha = alpha * 0.24;
-            ctx.lineWidth = 0.7;
-            ctx.stroke();
+            // Fade before the vanishing point so the colors never form a knot.
+            for (let k = samples.length - 7; k >= 0; k -= 6) {
+              const segment = samples.slice(k, k + 7);
+              const depth = segment[3].depth;
+              if (segment.some((q) => q.depth < 0.6)) continue;
+              const fade = (1 - blend(20, 49, depth)) * visible;
+              if (fade < 0.005) continue;
+              const pulse = reduced.matches
+                ? 0
+                : Math.pow(
+                    0.5 +
+                      0.5 *
+                        Math.cos(
+                          depth * 0.32 +
+                            travel * 0.32 +
+                            time * 0.85 -
+                            side * 1.4,
+                        ),
+                    10,
+                  );
+              const thickness = clamp(
+                focal / (depth * 95),
+                0.55,
+                compact ? 1.9 : 2.5,
+              );
+              const path = new Path2D();
+              path.moveTo(segment[0].x, segment[0].y);
+              for (let j = 1; j < segment.length; j++)
+                path.lineTo(segment[j].x, segment[j].y);
+              ctx.strokeStyle = palette[band];
+              for (const [spread, alpha] of [
+                [15, 0.04],
+                [5, 0.14],
+                [1.6, 0.42],
+                [0.65, 0.9],
+              ]) {
+                ctx.lineWidth = thickness * spread;
+                ctx.globalAlpha = fade * alpha * (0.7 + pulse * 0.3);
+                ctx.stroke(path);
+              }
+            }
           }
         }
         ctx.restore();
@@ -190,10 +193,9 @@
           // Reduced motion keeps the logo and colored lines still.
           if (reduced.matches && target > 0.45) {
             ctx.clearRect(0, 0, width, height);
-            environment(1.4);
+            environment(target);
           } else {
             environment(p);
-            ending(p);
           }
           canvas.dataset.phase = phase.toFixed(3);
           document.body.style.setProperty(
