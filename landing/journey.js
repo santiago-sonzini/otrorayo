@@ -22,7 +22,6 @@
         return null;
       }
       const ctx = canvas.getContext("2d");
-      const surface = window.OtrorayoSpace?.create();
       const sections = [...document.querySelectorAll("main > section")];
       const reduced = matchMedia("(prefers-reduced-motion: reduce)");
       const fine = matchMedia("(hover:hover) and (pointer:fine)");
@@ -72,7 +71,6 @@
       }
       function environment(p) {
         const visible = blend(0.16, 0.7, p) * (1 - blend(2.45, 3, p) * 0.6);
-        if (surface?.render(p, time, pointer, visible)) return;
         if (visible < 0.001) return;
         const compact = width < 768;
         const arrival = blend(0, 1, p),
@@ -119,83 +117,6 @@
         }
         ctx.save();
         ctx.globalCompositeOperation = "screen";
-        // Bevelled spatial ribs: projected faces catch light as the camera advances.
-        const face = (vertices, color, opacity) => {
-          const projected = vertices.map(projection);
-          if (projected.some((q) => q.z < 0.65)) return;
-          ctx.beginPath();
-          projected.forEach((q, i) =>
-            i ? ctx.lineTo(q.x, q.y) : ctx.moveTo(q.x, q.y),
-          );
-          ctx.closePath();
-          ctx.fillStyle = color;
-          ctx.globalAlpha = opacity * visible;
-          ctx.fill();
-        };
-        ctx.globalCompositeOperation = "source-over";
-        for (let rib = 8; rib >= 0; rib--) {
-          const z = 9 + rib * 7.8;
-          const relative = z - travel;
-          if (relative < 0.85) continue;
-          const fade =
-            blend(0.85, 3.8, relative) * (1 - blend(28, 68, relative));
-          const radius = 4.45 + Math.sin(z * 0.12) * 0.27;
-          const shape = (a, r, depth) => ({
-            x: Math.cos(a) * r,
-            y: Math.sin(a) * r * (0.78 + Math.sin(z * 0.08) * 0.06),
-            z: z + depth + Math.sin(a * 2 + rib * 0.38) * 0.44,
-          });
-          for (let j = 0; j < 112; j++) {
-            const a = (j / 112) * Math.PI * 2,
-              b = ((j + 1) / 112) * Math.PI * 2;
-            const light = Math.pow(
-              Math.max(0, Math.cos(a + 0.8 - time * 0.025)),
-              16,
-            );
-            const edge = Math.pow(
-              Math.max(0, Math.cos(a - 2.25 + time * 0.018)),
-              30,
-            );
-            const tone = Math.round(24 + light * 135 + edge * 74);
-            face(
-              [
-                shape(a, radius, 0),
-                shape(b, radius, 0),
-                shape(b, radius, 0.52),
-                shape(a, radius, 0.52),
-              ],
-              `rgb(${tone * 0.58},${tone * 0.66},${tone * 0.78})`,
-              fade * 0.85,
-            );
-            face(
-              [
-                shape(a, radius, 0),
-                shape(b, radius, 0),
-                shape(b, radius - 0.15, -0.025),
-                shape(a, radius - 0.15, -0.025),
-              ],
-              `rgb(${tone},${Math.min(255, tone + 9)},${Math.min(255, tone + 17)})`,
-              fade,
-            );
-            line(
-              [
-                shape(a, radius - 0.15, -0.025),
-                shape(b, radius - 0.15, -0.025),
-              ],
-              "#dce9f8",
-              fade * (0.09 + light * 0.65 + edge * 0.4),
-              0.8,
-            );
-            if (light > 0.6 || edge > 0.7)
-              line(
-                [shape(a, radius, 0.52), shape(b, radius, 0.52)],
-                palette[(rib + j) % 5],
-                fade * 0.18,
-                0.65,
-              );
-          }
-        }
-        ctx.globalCompositeOperation = "screen";
         // Fine longitudinal light strips converge in perspective; no particle cloud.
         for (let band = 0; band < 5; band++) {
           for (const side of [-1, 1]) {
@@ -215,34 +136,6 @@
             line(vertices, palette[band], 0.26, 0.9);
           }
         }
-        // Floor lines and their dim reflected counterparts anchor the camera in a space.
-        for (const x of [-4.3, -2.2, 0, 2.2, 4.3]) {
-          line(
-            [
-              { x, y: 3.25, z: travel + 1 },
-              { x, y: 3.25, z: travel + 64 },
-            ],
-            "#b7cbdd",
-            0.09,
-            0.7,
-          );
-          line(
-            [
-              { x: x + 0.03, y: 3.31, z: travel + 1 },
-              { x: x + 0.03, y: 3.31, z: travel + 64 },
-            ],
-            "#188ad9",
-            0.035,
-            3,
-          );
-        }
-        const halo = ctx.createRadialGradient(cx, cy, 0, cx, cy, height * 0.57);
-        halo.addColorStop(0, "#26476824");
-        halo.addColorStop(0.4, "#13253810");
-        halo.addColorStop(1, "#03040700");
-        ctx.globalAlpha = visible;
-        ctx.fillStyle = halo;
-        ctx.fillRect(0, 0, width, height);
         ctx.restore();
       }
       function ending(p) {
@@ -294,7 +187,7 @@
           }
           const ratio = canvas.width / width;
           ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
-          // Under reduced motion the logo remains still, with one subdued architectural view below it.
+          // Reduced motion keeps the logo and colored lines still.
           if (reduced.matches && target > 0.45) {
             ctx.clearRect(0, 0, width, height);
             environment(1.4);
@@ -320,7 +213,6 @@
           document.body.classList.remove("journey-ready", "journey-enabled");
           canvas.hidden = true;
           renderer.destroy();
-          surface?.destroy();
           console.error("No se pudo iniciar el recorrido", error);
         }
       }

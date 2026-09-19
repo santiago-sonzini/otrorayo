@@ -14,24 +14,24 @@ Abrir http://127.0.0.1:4173/. La entrada completa se reproduce en cada apertura 
 
 ## Entrada y escenas
 
-- Entrada de 7,2 segundos. Dos corrientes de cinco filamentos recorren el túnel líquido y convergen antes de revelar el logo blanco con placa posterior de vidrio. Se eliminaron la nube de partículas de colores, las estelas y el pulso circular. El cielo tenue del hero se conserva. El tramo del túnel se desvanece alrededor de los 3 segundos.
+- Entrada de 7,2 segundos. Dos corrientes de cinco filamentos recorren el fondo negro y convergen antes de revelar el logo blanco con placa posterior de vidrio. Se eliminaron la nube de partículas de colores, las estelas y el pulso circular. El cielo tenue del hero se conserva.
 - “Experience design studio” y “Cada evento, su propio fenómeno” se presentan en blanco, con mayor tamaño y cerca de dos segundos por frase. Revelado por palabras inspirado en [Split Reveal](https://motion.dev/ui/components/split-reveal), implementado con CSS propio.
 - El cielo del hero se mueve durante la entrada. El fondo, el logo y la interfaz se revelan por separado. OTRORAYO es el wordmark real del hero: no se sustituye al cerrar el overlay.
 - El logo de entrada termina en la posición, tamaño y reloj del renderer del hero. El overlay ya es transparente al retirarlo.
 - Se retiraron los botones “Pausar efectos” y “Repetir intro” del hero y footer. “Saltar intro” y Escape siguen funcionando; `prefers-reduced-motion` muestra un reveal de 300 ms.
 - El logo tiene una cara blanca opaca biselada y una placa transparente posterior, con espesor discreto. Una luz suave del fondo y los reflejos del borde comparten fase: normales extraídas de la máscara, iluminación difusa/especular, Fresnel aproximado y dispersión cromática localizada. Es una aproximación visual en Canvas 2D, no un trazador de rayos. La entrada y el hero comparten material y reloj para evitar cambios al acoplarse.
-- El hero conserva estrellas, galaxias tenues y planos líquidos sutiles. El resto del recorrido comparte un volumen líquido persistente que cambia de perspectiva con el scroll.
+- El hero conserva estrellas, galaxias tenues y planos líquidos sutiles. El resto del recorrido comparte líneas de color que cambian de perspectiva con el scroll.
 - Los efectos se detienen con la pestaña oculta o el modal abierto. Las escenas decorativas no contienen información necesaria para entender el sitio.
 
-El túnel renderiza a resolución física con ancho máximo de 3840 px; sus mapas se interpolan a 4096 px en desktop y 2048 px en móvil. DPR máximo 2 / 1,5. El tamaño del render no garantiza la misma tasa de cuadros en todos los dispositivos.
+La intro y el recorrido dibujan sólo filamentos de color, sin paredes de túnel. El material del logo y el cielo tenue del hero se conservan.
 
 ## Tipografías y scroll
 
 `tipografias.html` compara Space Grotesk, Sora, Manrope y Syne + Manrope con el mismo contenido. “Probar en la web” abre la landing con `?typeface=...`. Space Grotesk es ahora la fuente predeterminada por elección del usuario; los parámetros siguen permitiendo comparar alternativas sin cambiar ese valor. Las cuatro fuentes variables se sirven localmente en WOFF2 latino; las licencias OFL están en `assets/fonts/`. Space Grotesk se precarga localmente.
 
-La página tiene cuatro secciones: inicio, experiencias, invitaciones y contacto. `journey.js` convierte el scroll nativo en un recorrido de cámara continuo: el logo se aproxima y se desvanece, el espacio líquido aparece, la perspectiva cambia detrás de las invitaciones y los filamentos acompañan el contacto. Los textos mantienen su lectura normal; no se inclinan ni se fijan paneles superpuestos.
+La página tiene cuatro secciones: inicio, experiencias, invitaciones y contacto. `journey.js` convierte el scroll nativo en un recorrido de cámara continuo: el logo se aproxima y se desvanece, las líneas de color aparecen, la perspectiva cambia detrás de las invitaciones y los filamentos acompañan el contacto. Los textos mantienen su lectura normal; no se inclinan ni se fijan paneles superpuestos.
 
-`journey-space.js` dibuja una superficie tridimensional procedural con WebGL nativo, sin bibliotecas ni instalación. Un shader calcula el volumen, normales, luz especular y los cinco filamentos. La resolución se adapta a la pantalla con ancho máximo de 1920 px para esta escena persistente. `journey.js` conserva una alternativa de geometría proyectada en Canvas 2D si WebGL no está disponible. Movimiento reducido usa una vista inmóvil. No hay personas en la escena.
+`journey.js` proyecta dos grupos de líneas de cinco colores en Canvas 2D. Movimiento reducido usa una vista inmóvil. No hay paredes, aros, suelo ni personas en el recorrido. El prototipo `journey-space.js` está desconectado y no se carga en la landing.
 
 La propuesta de cuatro mundos de v18 y el scroll por superposición fueron retirados. `section-worlds.*`, `scroll-scenes.js` y `event-scene.js` se conservan como prototipos; no controlan el recorrido actual.
 
@@ -103,7 +103,7 @@ Verificado en Chromium a 360, 390 y 1440 px: secuencia de texto, fondo en movimi
 - `index.html`: contenido, modal, SEO y datos estructurados.
 - `script.js`: navegación, coordinación de escenas, secuencia de entrada y configuración pública.
 - `cosmic-scene.js`, `cosmic-background.js`: entrada, material del logo y cielo.
-- `journey.js`, `journey-space.js`, `journey.css`: recorrido continuo y superficie WebGL.
+- `journey.js`, `journey.css`: recorrido continuo de líneas de color.
 - `contact-modal.js`, `contact-modal.css`: formulario y envío.
 - `styles.css`, `immersive.css`, `glass.css`, `neon.css`, `cosmic.css`, `spatial.js`: presentación e interacción.
 - `../server/server.py`: servidor estático y endpoint privado SMTP.
@@ -119,3 +119,7 @@ Revisión del recorrido continuo: Chromium a 390 y 1440 px, cuatro secciones, in
 - El CTA de la navbar se revela cuando el del hero empieza a quedar detrás de la cabecera; al volver arriba se oculta también para teclado y lectores de pantalla.
 - La intro bloquea rueda, gestos táctiles y teclas de desplazamiento, y vuelve inerte el contenido de fondo. El bloqueo se retira al terminar, saltar o salir por error; también en movimiento reducido.
 - Las paredes de la intro y del recorrido usan líquido casi negro. Se redujeron los reflejos blancos y los colores del recorrido quedan en destellos tenues.
+
+### Simplificación visual (v22)
+
+Se retiraron las paredes líquidas de la intro y del scroll. Ambas animaciones conservan sólo los filamentos de colores; la intro mantiene la formación del logo y su transición al hero. La landing ya no carga el shader WebGL del túnel.

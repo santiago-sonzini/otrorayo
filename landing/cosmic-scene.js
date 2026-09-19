@@ -113,103 +113,6 @@
     smoothMap.width = smoothMap.height = 1;
     return map;
   }
-  function createLiquidTunnel() {
-    const surface = document.createElement("canvas"),
-      context = surface.getContext("2d");
-    let pixels,
-      output,
-      angles,
-      depths,
-      shades,
-      width = 0,
-      height = 0;
-    const twists = new Float32Array(4097),
-      along = new Float32Array(4097);
-    function prepare(w, h) {
-      // Native physical pixels up to UHD; the former 640 px enlarged layer is gone.
-      const ratio = Math.min(devicePixelRatio || 1, innerWidth < 768 ? 1.5 : 2);
-      const nextW = Math.round(Math.min(3840, w * ratio));
-      const nextH = Math.round((nextW * h) / w);
-      if (width === nextW && height === nextH) return;
-      width = surface.width = nextW;
-      height = surface.height = nextH;
-      pixels = context.createImageData(width, height);
-      output = new Uint32Array(pixels.data.buffer);
-      angles = new Float32Array(width * height);
-      depths = new Uint16Array(width * height);
-      shades = new Uint8Array(width * height);
-      const focal = Math.max(width * 0.55, height * 0.62);
-      for (let y = 0; y < height; y++)
-        for (let x = 0; x < width; x++) {
-          const dx = (x - width * 0.5) / focal,
-            dy = (y - height * 0.5) / focal;
-          const radius = Math.sqrt(dx * dx + dy * dy),
-            angle = Math.atan2(dy, dx);
-          const z = Math.min(12, 1.1 / Math.max(0.075, radius));
-          const i = y * width + x;
-          angles[i] =
-            (angle / (Math.PI * 2)) * 1024 +
-            Math.sin(angle * 3 + z * 0.25) * 20;
-          depths[i] = Math.floor(z * 102.4);
-          shades[i] = Math.floor(smooth(0.08, 0.24, radius) * 255);
-        }
-    }
-    return {
-      draw(ctx, w, h, compact, travel, time, center, alpha) {
-        if (!context || alpha < 0.002) return;
-        prepare(w, h);
-        const material = getLiquidMaterial(compact),
-          materialScale = material.size / 1024,
-          wrap = material.size - 1,
-          shift = material.size === 4096 ? 12 : 11;
-        for (let i = 0; i < 4097; i++) {
-          const z = i / 102.4,
-            world = z + travel;
-          twists[i] =
-            z * 18 +
-            Math.sin(world * 0.23) * 100 +
-            Math.sin(world * 0.41 - time * 0.4) * 26;
-          along[i] = Math.sin(world * 0.17) * 38 + z * 48 + travel * 70;
-        }
-        for (let i = 0; i < output.length; i++) {
-          const slice = depths[i];
-          const u = ((angles[i] + twists[slice]) * materialScale) & wrap,
-            v = (along[slice] * materialScale) & wrap;
-          const color = material.pixels[(v << shift) + u],
-            shade = shades[i];
-          if (shade === 255) output[i] = color;
-          else
-            output[i] =
-              (255 << 24) |
-              (((((color >>> 16) & 255) * shade) >> 8) << 16) |
-              (((((color >>> 8) & 255) * shade) >> 8) << 8) |
-              (((color & 255) * shade) >> 8);
-        }
-        context.putImageData(pixels, 0, 0);
-        ctx.save();
-        ctx.globalAlpha = alpha;
-        ctx.drawImage(surface, 0, 0, w, h);
-        const vignette = ctx.createRadialGradient(
-          w / 2,
-          h / 2,
-          Math.min(w, h) * 0.12,
-          w / 2,
-          h / 2,
-          Math.max(w, h) * 0.7,
-        );
-        vignette.addColorStop(0, "#02040800");
-        vignette.addColorStop(0.55, "#02040832");
-        vignette.addColorStop(1, "#020408dd");
-        ctx.fillStyle = vignette;
-        ctx.fillRect(0, 0, w, h);
-        ctx.restore();
-      },
-      destroy() {
-        surface.width = surface.height = 1;
-        pixels = output = angles = depths = shades = null;
-      },
-    };
-  }
   function texture(size = 384) {
     const c = document.createElement("canvas");
     c.width = c.height = size;
@@ -416,7 +319,6 @@
     }
     if (!ctx) return null;
     const hero = options.mode === "hero" || options.mode === "journey";
-    const liquidTunnel = hero ? null : createLiquidTunnel();
     let w = 1,
       h = 1,
       dpr = 1,
@@ -595,10 +497,6 @@
             ctx.globalAlpha = streamAlpha * 0.78;
             ctx.lineWidth = 1.1 + converge * 1.1;
             ctx.stroke();
-            ctx.strokeStyle = "#e9f5ff";
-            ctx.globalAlpha = streamAlpha * 0.22;
-            ctx.lineWidth = 0.5;
-            ctx.stroke();
           }
         }
       }
@@ -607,21 +505,7 @@
       return solid;
     }
     function wormhole(p, time) {
-      const m = Math.min(w, h),
-        flight = smooth(0.01, 0.34, p),
-        travel = flight * 3.8;
-      const energy = 1 - smooth(0.19, 0.42, p),
-        center = { x: w * 0.5, y: h * 0.44 };
-      liquidTunnel.draw(
-        ctx,
-        w,
-        h,
-        compact,
-        travel,
-        time * 0.35,
-        center,
-        smooth(0, 0.08, p) * energy,
-      );
+      const m = Math.min(w, h);
       const dock = smooth(0.5, 0.78, p);
       const destination = arrivalLayout || {
         x: w / 2,
@@ -677,7 +561,6 @@
       },
       destroy() {
         destroyed = true;
-        liquidTunnel?.destroy();
         assets = null;
         last = null;
         arrivalLayout = null;
