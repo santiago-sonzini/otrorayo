@@ -162,16 +162,6 @@
       updateActive(stack);
     });
 
-    document.querySelectorAll("[data-magnetic]").forEach((element) => {
-      trackPointer(element, {
-        xName: "--magnet-x",
-        yName: "--magnet-y",
-        xLimit: 6,
-        yLimit: 6,
-        unit: "px",
-      });
-    });
-
     function resetEffects() {
       window.cancelAnimationFrame(frame);
       frame = 0;

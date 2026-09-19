@@ -112,3 +112,10 @@ Verificado en Chromium a 360, 390 y 1440 px: secuencia de texto, fondo en movimi
 `direcciones.html` y sus módulos conservan las propuestas originales. `scene.js` y `particles.js` son históricos y la landing ya no los carga.
 
 Revisión del recorrido continuo: Chromium a 390 y 1440 px, cuatro secciones, intro completa, modal, movimiento reducido y ausencia de desbordes horizontales y errores JavaScript.
+
+### Ajustes de interacción (v21)
+
+- Los botones no siguen al puntero. El CTA de experiencias conserva un contorno blanco, forma redondeada y acento inferior de color.
+- El CTA de la navbar se revela cuando el del hero empieza a quedar detrás de la cabecera; al volver arriba se oculta también para teclado y lectores de pantalla.
+- La intro bloquea rueda, gestos táctiles y teclas de desplazamiento, y vuelve inerte el contenido de fondo. El bloqueo se retira al terminar, saltar o salir por error; también en movimiento reducido.
+- Las paredes de la intro y del recorrido usan líquido casi negro. Se redujeron los reflejos blancos y los colores del recorrido quedan en destellos tenues.

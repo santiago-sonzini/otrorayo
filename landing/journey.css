@@ -143,3 +143,54 @@ body.journey-enabled :is(.vr-copy, .contact-copy, .invitation-intro) {
     display: none;
   }
 }
+
+/* Controls stay still; color and contrast carry their hover feedback. */
+.button,
+.header-cta,
+.hero-actions .button,
+.service-card:hover {
+  transform: none;
+}
+.header-cta.is-scroll-managed {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition:
+    opacity 220ms ease,
+    visibility 220ms;
+}
+.header-cta.is-scroll-managed.is-visible {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+.vr-copy .experience-cta {
+  min-height: 56px;
+  margin-top: 26px;
+  padding: 16px 22px;
+  gap: 26px;
+  border: 1px solid rgb(255 255 255 / 0.3);
+  border-radius: 999px;
+  background: rgb(255 255 255 / 0.035);
+  backdrop-filter: blur(12px);
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.04);
+  font-size: 14px;
+  font-weight: 400;
+}
+.vr-copy .experience-cta:hover {
+  border-color: rgb(255 255 255 / 0.6);
+  background: rgb(255 255 255 / 0.065);
+}
+html.intro-locked,
+html.intro-locked body {
+  overflow: hidden;
+  overscroll-behavior: none;
+}
+html.intro-locked body {
+  touch-action: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .header-cta.is-scroll-managed {
+    transition: none;
+  }
+}

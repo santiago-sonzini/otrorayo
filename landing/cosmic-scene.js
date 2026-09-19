@@ -75,16 +75,16 @@
             ),
             32,
           );
-          const silver = reflection * 105 + secondary * 65 + caustic * 24;
+          const silver = reflection * 18 + secondary * 8 + caustic * 4;
           const tint = Math.sin((x * Math.PI) / 512 + height * 7);
           const r = Math.min(
             255,
-            2 + silver * (0.83 + Math.max(0, tint) * 0.13),
+            1 + silver * (0.65 + Math.max(0, tint) * 0.35),
           );
-          const g = Math.min(255, 4 + silver * 0.95);
+          const g = Math.min(255, 2 + silver * 0.65);
           const b = Math.min(
             255,
-            7 + silver + Math.max(0, -tint) * caustic * 19,
+            3 + silver * 0.8 + Math.max(0, -tint) * caustic * 7,
           );
           pixels[index] = (255 << 24) | (b << 16) | (g << 8) | r;
         }

@@ -56,6 +56,31 @@ const CONFIG = Object.freeze({
     listenToMedia(mobileMenu, () => setOpen(false));
   }
 
+  function setupHeaderCTA() {
+    const cta = document.querySelector(".header-cta");
+    const heroCTA = document.querySelector(".hero-actions .button");
+    const header = document.querySelector(".site-header");
+    if (!cta || !heroCTA || !header) return;
+    cta.classList.add("is-scroll-managed");
+    let frame = 0;
+    function update() {
+      frame = 0;
+      const show =
+        heroCTA.getBoundingClientRect().top <
+        header.getBoundingClientRect().bottom + 12;
+      cta.classList.toggle("is-visible", show);
+      cta.inert = !show;
+      cta.setAttribute("aria-hidden", String(!show));
+    }
+    function schedule() {
+      if (!frame) frame = requestAnimationFrame(update);
+    }
+    window.addEventListener("scroll", schedule, { passive: true });
+    window.addEventListener("resize", schedule, { passive: true });
+    new ResizeObserver(schedule).observe(document.querySelector("#inicio"));
+    update();
+  }
+
   function setupReveals() {
     const elements = [...document.querySelectorAll("[data-reveal]")];
     const reveal = (element) => {
@@ -302,6 +327,28 @@ const CONFIG = Object.freeze({
     let duration = fullDuration;
     let quick = false;
     let fadeDuration = 250;
+    let inertBefore = [];
+    function lockPage() {
+      document.documentElement.classList.add("intro-locked");
+      inertBefore = [
+        ...document.querySelectorAll("main, .site-header, .footer"),
+      ].map((element) => [element, element.inert]);
+      inertBefore.forEach(([element]) => {
+        element.inert = true;
+      });
+    }
+    function unlockPage() {
+      document.documentElement.classList.remove("intro-locked");
+      inertBefore.forEach(([element, wasInert]) => {
+        element.inert = wasInert;
+      });
+      inertBefore = [];
+    }
+    const blockScroll = (event) => {
+      if (running) event.preventDefault();
+    };
+    window.addEventListener("wheel", blockScroll, { passive: false });
+    window.addEventListener("touchmove", blockScroll, { passive: false });
 
     const phrases = [...intro.querySelectorAll("[data-intro-phrase]")];
     let textPhase = -1;
@@ -369,6 +416,7 @@ const CONFIG = Object.freeze({
     function hideIntro() {
       const introHadFocus = intro.contains(document.activeElement);
       running = false;
+      unlockPage();
       pausedAt = null;
       timers.forEach(window.clearTimeout);
       timers = [];
@@ -437,6 +485,7 @@ const CONFIG = Object.freeze({
       duration = quick ? 300 : fullDuration;
       fadeDuration = quick ? 150 : 250;
       running = true;
+      lockPage();
       pausedAt = null;
       startedAt = performance.now();
       restoreFocus = null;
@@ -472,6 +521,21 @@ const CONFIG = Object.freeze({
     }
     skip?.addEventListener("click", leaveIntro);
     document.addEventListener("keydown", (event) => {
+      if (
+        running &&
+        [
+          "ArrowDown",
+          "ArrowUp",
+          "ArrowLeft",
+          "ArrowRight",
+          "PageDown",
+          "PageUp",
+          "Home",
+          "End",
+          " ",
+        ].includes(event.key)
+      )
+        event.preventDefault();
       if (running && event.key === "Escape") {
         event.preventDefault();
         leaveIntro();
@@ -543,6 +607,7 @@ const CONFIG = Object.freeze({
     if (["space-grotesk", "sora", "manrope", "syne"].includes(typeface))
       document.body.dataset.typeface = typeface;
     setupMenu();
+    setupHeaderCTA();
     window.OtrorayoContact?.init(CONFIG);
     setupReveals();
     const year = document.querySelector("#year");

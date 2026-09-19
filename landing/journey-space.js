@@ -65,15 +65,16 @@
         float ribbons=sin(a*2.+hit.z*.24+clock*.035);
         float silver=pow(.5+.5*ribbons,24.);
         float fog=exp(-depth*.027);
-        col=vec3(.022,.029,.037)*(.4+wide*2.);
-        col+=vec3(.58,.66,.76)*(spec*.9+silver*.105+fres*.028);
+        col=vec3(.008,.010,.013)*(.4+wide*.6);
+        col+=vec3(.58,.66,.76)*(spec*.075+silver*.025+fres*.012);
         for(int i=0;i<5;i++){
           float f=float(i);
           float lane=.52+f*.045+sin(hit.z*.16)*.055;
           float distance=min(angleDistance(a,lane),angleDistance(a,lane-PI));
           float core=exp(-distance*distance*15500.);
           float bloom=exp(-distance*distance*550.);
-          col+=spectrum(f)*(core*.6+bloom*.032);
+          float glint=.2+.8*pow(.5+.5*sin(hit.z*.72+clock*.12+f*.35),10.);
+          col+=spectrum(f)*(core*.24+bloom*.015)*glint;
         }
         col*=fog;
         col=pow(col,vec3(.88));
