@@ -50,6 +50,7 @@
       name="twitter:image"
       content="https://otrorayo.com/assets/images/otrorayo-social.png"
     />
+    <script src="page-start.js?v=24"></script>
     <link rel="canonical" href="https://otrorayo.com/" />
     <link
       rel="icon"
@@ -57,10 +58,10 @@
       type="image/jpeg"
     />
     <link rel="stylesheet" href="styles.css?v=16" />
-    <link rel="stylesheet" href="immersive.css?v=22" />
+    <link rel="stylesheet" href="immersive.css?v=24" />
     <link rel="stylesheet" href="glass.css?v=16" />
     <link rel="stylesheet" href="neon.css?v=16" />
-    <link rel="stylesheet" href="cosmic.css?v=16" />
+    <link rel="stylesheet" href="cosmic.css?v=24" />
     <link rel="stylesheet" href="contact-modal.css?v=16" />
     <link
       rel="preload"
@@ -70,14 +71,14 @@
       crossorigin
     />
     <link rel="stylesheet" href="font-options.css?v=16" />
-    <link rel="stylesheet" href="journey.css?v=22" />
-    <script src="cosmic-scene.js?v=22" defer></script>
-    <script src="journey.js?v=22" defer></script>
+    <link rel="stylesheet" href="journey.css?v=24" />
+    <script src="cosmic-scene.js?v=24" defer></script>
+    <script src="journey.js?v=24" defer></script>
     <script src="cosmic-background.js?v=16" defer></script>
     <script src="event-scene.js?v=19" defer></script>
     <script src="contact-modal.js?v=16" defer></script>
-    <script src="script.js?v=23" defer></script>
-    <script src="spatial.js?v=22" defer></script>
+    <script src="script.js?v=24" defer></script>
+    <script src="spatial.js?v=24" defer></script>
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
@@ -284,31 +285,202 @@
             <svg aria-hidden="true"><use href="#arrow-up-right" /></svg
           ></a>
         </div>
-        <div class="vr-art" aria-hidden="true">
-          <canvas id="event-scene" hidden></canvas>
-          <!-- Respaldo sin Canvas. La escena activa es una experiencia conceptual. -->
-          <div class="portal-tunnel">
-            <i style="--ring: 0; --portal-color: var(--brand-1)"></i
-            ><i style="--ring: 1; --portal-color: var(--brand-2)"></i
-            ><i style="--ring: 2; --portal-color: var(--brand-3)"></i
-            ><i style="--ring: 3; --portal-color: var(--brand-4)"></i
-            ><i style="--ring: 4; --portal-color: var(--brand-5)"></i
-            ><i style="--ring: 5; --portal-color: var(--brand-1)"></i>
-            <span>OTRA<br />DIMENSIÓN.</span>
-          </div>
-        </div>
-        <div class="vr-scene-controls">
-          <div>
-            <span class="scene-kicker">ESCENA CONCEPTUAL</span
-            ><span id="event-mode" aria-live="polite">Recorrido</span>
-          </div>
-          <div class="vr-scene-buttons">
-            <button type="button" id="event-camera">Cambiar cámara ↗</button
-            ><button type="button" id="event-pause" aria-pressed="false">
-              Pausar Ⅱ
-            </button>
-          </div>
-        </div>
+        <figure class="experience-visual" id="experience-visual" data-mode="vr">
+          <svg
+            class="experience-art"
+            viewBox="0 0 640 450"
+            role="img"
+            aria-label="Visor de realidad virtual sobre un escenario de luz"
+          >
+            <defs>
+              <linearGradient id="exp-metal" x1="0" y1="0" x2="0.8" y2="1">
+                <stop stop-color="#67707a" />
+                <stop offset=".15" stop-color="#252a31" />
+                <stop offset=".6" stop-color="#090c10" />
+                <stop offset="1" stop-color="#303741" />
+              </linearGradient>
+              <linearGradient id="exp-lens" x1="0" y1="0" x2="1" y2="1">
+                <stop stop-color="#0b1219" />
+                <stop offset=".42" stop-color="#172836" />
+                <stop offset=".49" stop-color="#2b4455" />
+                <stop offset=".53" stop-color="#101a24" />
+                <stop offset="1" stop-color="#030406" />
+              </linearGradient>
+              <linearGradient id="exp-spectrum">
+                <stop stop-color="#ee3825" />
+                <stop offset=".25" stop-color="#ff6b0b" />
+                <stop offset=".5" stop-color="#fec306" />
+                <stop offset=".75" stop-color="#77bd20" />
+                <stop offset="1" stop-color="#188ad9" />
+              </linearGradient>
+              <radialGradient id="exp-halo">
+                <stop stop-color="#188ad9" stop-opacity=".15" />
+                <stop offset="1" stop-color="#188ad9" stop-opacity="0" />
+              </radialGradient>
+            </defs>
+            <ellipse
+              cx="335"
+              cy="295"
+              rx="275"
+              ry="145"
+              fill="url(#exp-halo)"
+            />
+            <path
+              d="M86 344 329 288 573 344 328 413Z"
+              fill="#080b10"
+              stroke="#8798aa"
+              stroke-opacity=".19"
+            />
+            <path
+              d="m86 344 242 61 245-61M328 405v8"
+              fill="none"
+              stroke="url(#exp-spectrum)"
+              stroke-opacity=".55"
+            />
+            <g class="experience-object" data-visual="vr">
+              <path
+                d="M202 192v-56q12-84 126-79 112 5 124 85v58"
+                fill="none"
+                stroke="#0c1117"
+                stroke-width="32"
+              />
+              <path
+                d="M203 168v-28q10-78 122-78 103 0 124 83"
+                fill="none"
+                stroke="#65707c"
+                stroke-opacity=".55"
+                stroke-width="2"
+              />
+              <path
+                d="m165 175 50-19 250 11 39 36-9 103-40 29-257-14-38-36Z"
+                fill="url(#exp-metal)"
+                stroke="#8593a1"
+                stroke-opacity=".6"
+              />
+              <path
+                d="M177 165q-24 6-26 34l-3 73q1 37 38 43l97 7q22 1 35-22 11-20 25 0 10 23 34 24l73-4q28-3 29-32l4-76q-1-31-29-34Z"
+                fill="url(#exp-metal)"
+                stroke="#d5e0e9"
+                stroke-opacity=".75"
+              />
+              <path
+                d="M187 179q-20 2-21 26l-2 57q-2 34 28 38l87 7q26 1 39-23 14-19 30 5 8 18 28 20l66-4q24-1 25-26l2-64q-1-22-26-24Z"
+                fill="url(#exp-lens)"
+                stroke="#668298"
+                stroke-opacity=".5"
+              />
+              <path
+                d="m178 207 268 19m-266-11 265 19m-263-10 261 18"
+                stroke="url(#exp-spectrum)"
+                stroke-opacity=".55"
+                fill="none"
+              />
+              <path d="m179 181 261 13" stroke="#e5f4ff" stroke-opacity=".55" />
+              <circle cx="189" cy="284" r="5" fill="#050608" stroke="#67727c" />
+              <circle cx="443" cy="288" r="5" fill="#050608" stroke="#67727c" />
+              <path
+                d="m494 214-2 58"
+                stroke="#788996"
+                stroke-opacity=".5"
+                stroke-width="3"
+              />
+            </g>
+            <g class="experience-object" data-visual="visuals">
+              <path
+                d="m100 137 130 34v145L100 287Z"
+                fill="url(#exp-metal)"
+                stroke="#708392"
+              />
+              <path
+                d="M246 101h213v218H246Z"
+                fill="url(#exp-lens)"
+                stroke="#92a3b2"
+              />
+              <path
+                d="m477 155 91-31v161l-91 30Z"
+                fill="url(#exp-metal)"
+                stroke="#708392"
+              />
+              <g fill="none" stroke="url(#exp-spectrum)" stroke-width="2">
+                <path
+                  d="M112 213q54-116 107 19M112 224q54-116 107 19M112 235q54-116 107 19"
+                />
+                <path
+                  d="M258 214q91-175 190 12M258 228q91-175 190 12M258 242q91-175 190 12M258 256q91-175 190 12M258 270q91-175 190 12"
+                />
+                <path
+                  d="M488 231q33-98 69-20M488 243q33-98 69-20M488 255q33-98 69-20"
+                />
+              </g>
+              <path
+                d="M352 321v52m-46 6 93-3"
+                stroke="#728393"
+                stroke-width="3"
+              />
+            </g>
+            <g class="experience-object" data-visual="play">
+              <path
+                d="m207 76 247 20-30 261-247-30Z"
+                fill="url(#exp-metal)"
+                stroke="#a6b2bf"
+                stroke-opacity=".7"
+              />
+              <path
+                d="m221 96 216 18-26 218-216-24Z"
+                fill="#070d14"
+                stroke="#3a526a"
+              />
+              <g fill="none" stroke="url(#exp-spectrum)" stroke-width="2">
+                <path
+                  d="m248 139 44 4-5 46-44-4Z M312 145l44 4-5 46-44-4Z M376 151l35 3-5 46-35-4Z M241 204l44 4-5 46-44-4Z M305 210l44 4-5 46-44-4Z M369 216l35 4-5 46-35-4Z M234 269l44 4-3 29-44-4Z M298 275l44 4-3 29-44-4Z"
+                />
+              </g>
+              <path
+                class="experience-signal"
+                d="m312 145 44 4-5 46-44-4Z"
+                fill="#188ad9"
+                fill-opacity=".3"
+              />
+              <circle
+                cx="154"
+                cy="280"
+                r="19"
+                fill="#0d1721"
+                stroke="#a9b6c2"
+              />
+              <path d="m149 280 4 4 7-9" stroke="white" fill="none" />
+              <circle
+                cx="477"
+                cy="237"
+                r="19"
+                fill="#0d1721"
+                stroke="#a9b6c2"
+              />
+              <path d="m472 237 4 4 7-9" stroke="white" fill="none" />
+            </g>
+          </svg>
+          <figcaption>
+            <div
+              class="experience-switch"
+              role="group"
+              aria-label="Explorar experiencias"
+            >
+              <button type="button" data-experience="vr" aria-pressed="true">
+                Realidad virtual
+              </button>
+              <button
+                type="button"
+                data-experience="visuals"
+                aria-pressed="false"
+              >
+                Visuales
+              </button>
+              <button type="button" data-experience="play" aria-pressed="false">
+                Interacción
+              </button>
+            </div>
+          </figcaption>
+        </figure>
       </section>
 
       <section

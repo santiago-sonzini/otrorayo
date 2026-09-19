@@ -462,7 +462,7 @@
       const streamAlpha = smooth(0, 0.055, p) * (1 - smooth(0.36, 0.49, p));
       const converge = smooth(0.16, 0.36, p);
       ctx.save();
-      ctx.globalCompositeOperation = "screen";
+      ctx.globalCompositeOperation = "source-over";
       ctx.lineCap = "round";
       // Two currents: five fine spectral filaments per wall, gathering into straight rays.
       if (streamAlpha > 0.005) {
@@ -481,18 +481,20 @@
               const wallY = h * 0.39 + (Math.sin(angle) * 1.64 * focal) / z;
               const diagonal = sign * 0.375 * (1 - t);
               const split = smooth(0.28, 0.39, p) * sign * 0.026;
+              const separation =
+                (band - 2) * (compact ? 1.4 : 2) * (1 - smooth(0.33, 0.46, p));
               const sx =
                 wallX * (1 - converge) +
-                (x + (diagonal - split) * size) * converge;
+                (x + (diagonal - split) * size + separation) * converge;
               const sy =
                 wallY * (1 - converge) +
-                (y + (diagonal + split) * size) * converge;
+                (y + (diagonal + split) * size - separation) * converge;
               if (i) ctx.lineTo(sx, sy);
               else ctx.moveTo(sx, sy);
             }
             ctx.strokeStyle = COLORS[band];
-            ctx.globalAlpha = streamAlpha * 0.09;
-            ctx.lineWidth = 12;
+            ctx.globalAlpha = streamAlpha * 0.025;
+            ctx.lineWidth = compact ? 4 : 6;
             ctx.stroke();
             ctx.globalAlpha = streamAlpha * 0.78;
             ctx.lineWidth = 1.1 + converge * 1.1;
@@ -506,7 +508,7 @@
     }
     function wormhole(p, time) {
       const m = Math.min(w, h);
-      const dock = smooth(0.5, 0.78, p);
+      const dock = smooth(0.74, 0.86, p);
       const destination = arrivalLayout || {
         x: w / 2,
         y: h * 0.4,
@@ -515,7 +517,9 @@
       const size = m * 0.5 + (destination.size - m * 0.5) * dock;
       const x = w * 0.5 + (destination.x - w * 0.5) * dock,
         y = h * 0.35 + (destination.y - h * 0.35) * dock;
-      const handoff = arrivalLayout ? smooth(0.8, 0.98, p) : smooth(0.86, 1, p);
+      const handoff = arrivalLayout
+        ? smooth(0.86, 0.99, p)
+        : smooth(0.86, 1, p);
       const solid = energyFormation(p, time, x, y, size);
       if (solid > 0) logo(time, {}, solid * (1 - handoff), { x, y, size });
     }

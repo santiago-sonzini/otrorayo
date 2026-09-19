@@ -36,6 +36,7 @@
       let target = 0,
         phase = 0,
         points = [],
+        routes = [],
         home = { x: width / 2, y: height * 0.38, size: height * 0.38 };
       let inPage = true,
         ready = false,
@@ -54,6 +55,88 @@
           y: r.top + scrollY + r.height * 0.5,
           size: Math.min(r.width * 0.59, r.height * 0.66),
         };
+        const docRect = (element) => {
+          const bounds = element.getBoundingClientRect();
+          return {
+            left: bounds.left,
+            right: bounds.right,
+            top: bounds.top + scrollY,
+            bottom: bounds.bottom + scrollY,
+            height: bounds.height,
+          };
+        };
+        const hero = docRect(sections[0]);
+        const stage = docRect(document.querySelector("#experience-visual"));
+        const invites = docRect(sections[2]);
+        const contact = docRect(sections[3]);
+        const compact = width < 768;
+        const right = width - (compact ? 12 : 42);
+        const left = compact ? 12 : 42;
+        const start = hero.bottom - 120;
+        const turn = stage.bottom + 36;
+        const samples = [{ x: width * 0.72, y: start }];
+        function curve(x1, y1, x2, y2, x3, y3) {
+          const from = samples[samples.length - 1];
+          for (let i = 1; i <= 90; i++) {
+            const t = i / 90,
+              u = 1 - t;
+            samples.push({
+              x:
+                u * u * u * from.x +
+                3 * u * u * t * x1 +
+                3 * u * t * t * x2 +
+                t * t * t * x3,
+              y:
+                u * u * u * from.y +
+                3 * u * u * t * y1 +
+                3 * u * t * t * y2 +
+                t * t * t * y3,
+            });
+          }
+        }
+        curve(
+          right,
+          start + 70,
+          right,
+          stage.top - 90,
+          right,
+          stage.top + stage.height * 0.45,
+        );
+        samples.push({ x: right, y: turn });
+        curve(right, turn + 70, left, turn + 20, left, invites.top + 110);
+        samples.push({ x: left, y: invites.bottom - 160 });
+        curve(
+          left,
+          invites.bottom + 20,
+          right,
+          contact.top + 20,
+          right,
+          contact.top + contact.height * 0.54,
+        );
+        curve(
+          right,
+          contact.bottom - 60,
+          width * 0.7,
+          contact.bottom - 48,
+          width * 0.59,
+          contact.bottom - 48,
+        );
+        routes = palette.map((color, i) => {
+          const gap = (i - 2) * (compact ? 2 : 3);
+          const path = new Path2D();
+          samples.forEach((point, index) => {
+            const previous = samples[Math.max(0, index - 1)];
+            const next = samples[Math.min(samples.length - 1, index + 1)];
+            const dx = next.x - previous.x,
+              dy = next.y - previous.y;
+            const length = Math.hypot(dx, dy) || 1;
+            const x = point.x - (dy / length) * gap,
+              y = point.y + (dx / length) * gap;
+            if (!index) path.moveTo(x, y);
+            else path.lineTo(x, y);
+          });
+          return { color, path };
+        });
         renderer.resize();
         readScroll();
       }
@@ -70,102 +153,21 @@
         schedule();
       }
       function environment(p) {
-        const visible = blend(0.16, 0.7, p) * (1 - blend(2.45, 3, p) * 0.6);
+        const visible = blend(0.16, 0.65, p);
         if (visible < 0.001) return;
-        const compact = width < 768;
-        const arrival = blend(0, 1, p),
-          gallery = blend(1, 2, p),
-          closing = blend(2, 3, p);
-        const cx =
-          mix(width * 0.5, width * (compact ? 0.54 : 0.7), arrival) -
-          gallery * width * 0.19 +
-          closing * width * 0.19;
-        const cy = height * (compact ? 0.61 : 0.54);
-        const focal = Math.min(width * (compact ? 1.03 : 0.74), height * 1.02);
-        const travel = p * 11.5;
-        const yaw = Math.sin(p * 1.55) * 0.095 + pointer.x * 0.015;
-        const camX = Math.sin(p * 1.4) * 1.1;
-        const projection = ({ x, y, z }) => {
-          const dx = x - camX,
-            dz = z - travel;
-          const rx = dx * Math.cos(yaw) - dz * Math.sin(yaw),
-            rz = dx * Math.sin(yaw) + dz * Math.cos(yaw);
-          return {
-            x: cx + (rx * focal) / Math.max(0.2, rz),
-            y: cy + ((y + pointer.y * 0.06) * focal) / Math.max(0.2, rz),
-            z: rz,
-          };
-        };
-        function line(vertices, color, opacity, lineWidth = 1) {
-          ctx.beginPath();
-          let started = false;
-          for (const v of vertices) {
-            const q = projection(v);
-            if (q.z < 0.65) {
-              started = false;
-              continue;
-            }
-            if (!started) {
-              ctx.moveTo(q.x, q.y);
-              started = true;
-            } else ctx.lineTo(q.x, q.y);
-          }
-          ctx.globalAlpha = opacity * visible;
+        // Fixed document anchors: logo → experience → invitations → contact.
+        // The paths move with their sections, so they never drift across the copy.
+        ctx.save();
+        ctx.translate(0, -scrollY);
+        ctx.lineCap = "round";
+        for (const { color, path } of routes) {
           ctx.strokeStyle = color;
-          ctx.lineWidth = lineWidth;
-          ctx.stroke();
-        }
-        ctx.save();
-        ctx.globalCompositeOperation = "screen";
-        // Fine longitudinal light strips converge in perspective; no particle cloud.
-        for (let band = 0; band < 5; band++) {
-          for (const side of [-1, 1]) {
-            const vertices = [];
-            for (let k = 0; k < 100; k++) {
-              const z = travel + 0.9 + k * 0.65;
-              const a =
-                side * (0.46 + band * 0.12) +
-                Math.sin(z * 0.11 + time * 0.09) * 0.025;
-              vertices.push({
-                x: Math.cos(a) * 4.48 * side,
-                y: Math.sin(a) * 3.5,
-                z,
-              });
-            }
-            line(vertices, palette[band], 0.04, 8);
-            line(vertices, palette[band], 0.26, 0.9);
-          }
-        }
-        ctx.restore();
-      }
-      function ending(p) {
-        const alpha = blend(2.28, 3, p);
-        if (alpha < 0.001) return;
-        const cx = width * (width < 768 ? 0.7 : 0.76),
-          cy = height * 0.58;
-        ctx.save();
-        ctx.globalCompositeOperation = "screen";
-        for (let side = 0; side < 2; side++) {
-          const sign = side ? 1 : -1;
-          for (let c = 0; c < 5; c++) {
-            ctx.beginPath();
-            ctx.moveTo(cx + sign * width * 0.035, cy + sign * height * 0.04);
-            ctx.bezierCurveTo(
-              cx + sign * width * 0.19,
-              cy + sign * height * 0.17,
-              cx + sign * width * 0.36,
-              cy + sign * height * 0.36 + (c - 2) * 17,
-              cx + sign * width * 0.6,
-              cy + sign * height * 0.6 + (c - 2) * 36,
-            );
-            ctx.strokeStyle = palette[c];
-            ctx.globalAlpha = alpha * 0.04;
-            ctx.lineWidth = 9;
-            ctx.stroke();
-            ctx.globalAlpha = alpha * 0.24;
-            ctx.lineWidth = 0.7;
-            ctx.stroke();
-          }
+          ctx.globalAlpha = visible * 0.025;
+          ctx.lineWidth = 5;
+          ctx.stroke(path);
+          ctx.globalAlpha = visible * 0.34;
+          ctx.lineWidth = 0.8;
+          ctx.stroke(path);
         }
         ctx.restore();
       }
@@ -193,7 +195,6 @@
             environment(1.4);
           } else {
             environment(p);
-            ending(p);
           }
           canvas.dataset.phase = phase.toFixed(3);
           document.body.style.setProperty(

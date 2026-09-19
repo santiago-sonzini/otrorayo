@@ -189,3 +189,146 @@ html.intro-locked body {
     transition: none;
   }
 }
+
+/* The experience occupies the same scene and has an actual visual focal point. */
+body.journey-enabled #experiencias {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.12fr);
+  gap: 38px;
+  align-items: center;
+  height: auto;
+  min-height: 820px;
+  padding: 100px var(--page);
+}
+body.journey-enabled #experiencias .vr-copy {
+  position: relative;
+  left: auto;
+  right: auto;
+  top: auto;
+  max-width: 550px;
+}
+.experience-visual {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  min-width: 0;
+  margin: 0;
+}
+.experience-art {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+.experience-object {
+  display: none;
+}
+[data-mode="vr"] [data-visual="vr"],
+[data-mode="visuals"] [data-visual="visuals"],
+[data-mode="play"] [data-visual="play"] {
+  display: block;
+  animation: experience-enter 450ms ease both;
+}
+.experience-switch {
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+  margin-top: 15px;
+}
+.experience-switch button {
+  min-height: 44px;
+  padding: 9px 13px;
+  border: 1px solid transparent;
+  border-radius: 24px;
+  color: #a1a6ad;
+  background: transparent;
+  font-size: 12px;
+  transition:
+    color 180ms,
+    border-color 180ms,
+    background 180ms;
+}
+.experience-switch button[aria-pressed="true"] {
+  color: white;
+  border-color: #ffffff40;
+  background: #ffffff07;
+}
+.experience-switch button:hover {
+  color: white;
+  border-color: #ffffff30;
+}
+.experience-switch button:focus-visible {
+  outline: 2px solid white;
+  outline-offset: 3px;
+}
+@keyframes experience-enter {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+/* Reserve separate space for the mark and the two opening phrases. */
+.intro .intro-phrase {
+  top: 74%;
+  max-width: 940px;
+  line-height: 1.16;
+}
+.intro .intro-phrase--studio {
+  font-size: clamp(27px, 3.5vw, 48px);
+}
+.intro .intro-phrase--promise {
+  font-size: clamp(30px, 4.2vw, 60px);
+}
+@media (max-width: 767px) {
+  body.journey-enabled #experiencias {
+    grid-template-columns: 1fr;
+    min-height: 0;
+    padding: 90px var(--page) 65px;
+    gap: 22px;
+  }
+  .experience-visual {
+    max-width: 440px;
+    margin: 0 auto;
+  }
+  .experience-art {
+    width: 110%;
+    margin-left: -5%;
+  }
+  .experience-switch {
+    gap: 2px;
+    margin-top: 0;
+  }
+  .experience-switch button {
+    padding-inline: 11px;
+    font-size: 11px;
+  }
+  .intro .intro-phrase {
+    top: 68%;
+    width: calc(100% - 48px);
+    max-width: 340px;
+  }
+  .intro .intro-phrase--studio {
+    font-size: 26px;
+  }
+  .intro .intro-phrase--promise {
+    font-size: 31px;
+  }
+}
+@media (max-height: 600px) and (min-width: 768px) {
+  .intro .intro-phrase {
+    top: 79%;
+  }
+  .intro .intro-phrase--studio {
+    font-size: 25px;
+  }
+  .intro .intro-phrase--promise {
+    font-size: 29px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .experience-object {
+    animation: none !important;
+  }
+}

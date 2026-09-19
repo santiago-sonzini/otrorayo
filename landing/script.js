@@ -56,6 +56,29 @@ const CONFIG = Object.freeze({
     listenToMedia(mobileMenu, () => setOpen(false));
   }
 
+  function setupExperiencePreview() {
+    const visual = document.querySelector("#experience-visual");
+    if (!visual) return;
+    const names = {
+      vr: "Visor de realidad virtual sobre un escenario de luz",
+      visuals: "Escenario con tres pantallas de visuales",
+      play: "Juego interactivo con una pantalla de objetivos",
+    };
+    visual.querySelectorAll("[data-experience]").forEach((button) => {
+      button.addEventListener("click", () => {
+        visual.dataset.mode = button.dataset.experience;
+        visual
+          .querySelector("svg")
+          .setAttribute("aria-label", names[button.dataset.experience]);
+        visual
+          .querySelectorAll("[data-experience]")
+          .forEach((item) =>
+            item.setAttribute("aria-pressed", String(item === button)),
+          );
+      });
+    });
+  }
+
   function setupHeaderCTA() {
     const cta = document.querySelector(".header-cta");
     const heroCTA = document.querySelector(".hero-actions .button");
@@ -372,7 +395,7 @@ const CONFIG = Object.freeze({
     });
     function updateText(progress) {
       const next =
-        progress < 0.19 ? -1 : progress < 0.47 ? 0 : progress < 0.77 ? 1 : 2;
+        progress < 0.19 ? -1 : progress < 0.47 ? 0 : progress < 0.7 ? 1 : 2;
       if (next === textPhase) return;
       textPhase = next;
       phrases.forEach((phrase, index) => {
@@ -397,14 +420,14 @@ const CONFIG = Object.freeze({
     function updateArrival(progress, seconds) {
       const style = document.body.style;
       style.setProperty("--intro-veil", 1 - blend(0.22, 0.46, progress));
-      style.setProperty("--intro-logo", progress >= 0.8 ? 1 : 0);
+      style.setProperty("--intro-logo", progress >= 0.86 ? 1 : 0);
       style.setProperty("--intro-ui", blend(0.84, 0.99, progress));
       style.setProperty("--intro-wordmark", blend(0.77, 0.92, progress));
       style.setProperty(
         "--intro-wordmark-y",
         `${32 * (1 - blend(0.77, 0.96, progress))}px`,
       );
-      if (progress >= 0.78) heroScene.syncArrival?.(seconds);
+      if (progress >= 0.84) heroScene.syncArrival?.(seconds);
     }
     const later = (callback, delay) =>
       timers.push(window.setTimeout(callback, delay));
@@ -591,6 +614,8 @@ const CONFIG = Object.freeze({
     const typeface = new URLSearchParams(location.search).get("typeface");
     if (["space-grotesk", "sora", "manrope", "syne"].includes(typeface))
       document.body.dataset.typeface = typeface;
+    window.OtrorayoPageStart?.reset();
+    setupExperiencePreview();
     setupMenu();
     setupHeaderCTA();
     window.OtrorayoContact?.init(CONFIG);
