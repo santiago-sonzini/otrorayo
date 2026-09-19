@@ -312,7 +312,6 @@ const CONFIG = Object.freeze({
     const intro = document.querySelector("#intro");
     if (!intro) return;
     const canvas = document.querySelector("#intro-scene");
-    const skip = document.querySelector("#skip-intro");
     const scene = createScene(canvas, "intro");
     const fullDuration = Math.min(
       7600,
@@ -506,20 +505,13 @@ const CONFIG = Object.freeze({
       document.body.classList.add("intro-running");
       heroScene.setIntroActive(true);
       if (canvas) canvas.hidden = true;
-      if (skip) skip.hidden = true;
       if (!quick) {
         canvas.hidden = false;
         scene.resize();
         alignArrival();
         render(startedAt);
-        if (skip)
-          later(() => {
-            skip.hidden = false;
-            if (!document.hidden) skip.focus({ preventScroll: true });
-          }, 500);
       }
     }
-    skip?.addEventListener("click", leaveIntro);
     document.addEventListener("keydown", (event) => {
       if (
         running &&
@@ -568,13 +560,6 @@ const CONFIG = Object.freeze({
         const remaining = Math.max(0, duration - elapsed);
         later(hideIntro, remaining);
         later(hideIntro, remaining + 900);
-        if (skip?.hidden)
-          later(
-            () => {
-              skip.hidden = false;
-            },
-            Math.max(0, 500 - elapsed),
-          );
         frame = requestAnimationFrame(render);
       } else if (running && !quick && !frame) {
         frame = requestAnimationFrame(render);
