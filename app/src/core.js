@@ -43,7 +43,7 @@ export class Controller {
     this.connections.get(id)?.close();
     this.connections.set(id, peer);
     const previous = this.devices.get(id) || {};
-    this.devices.set(id, { ...previous, id, ip, lastSeen: Date.now(), connected: true });
+    this.devices.set(id, { ...previous, id, ip, lastSeen: Date.now(), connected: true, clock: null });
     peer.on('close', () => {
       if (this.connections.get(id) !== peer) return;
       this.connections.delete(id);
@@ -53,7 +53,8 @@ export class Controller {
     peer.send({ v: 1, type: 'SNAPSHOT', desired: this.desired, serverTime: Date.now() });
     this.notify();
   }
-  receive(id, message) {
+  receive(id, message, peer = this.connections.get(id)) {
+    if (this.connections.get(id) !== peer) return;
     if (message?.v !== 1 || typeof message.type !== 'string') return;
     const device = this.devices.get(id);
     if (!device) return;
@@ -72,8 +73,10 @@ export class Controller {
         positionMs: Number.isFinite(o.positionMs) ? o.positionMs : 0,
         error: o.error ? String(o.error).slice(0, 200) : null
       };
-      if (Number.isFinite(message.clock?.offsetMs) && Number.isFinite(message.clock?.rttMs)) {
-        device.clock = { offsetMs: message.clock.offsetMs, rttMs: message.clock.rttMs, measuredAt: Date.now() };
+      const sampleAgeMs = message.clock?.sampleAgeMs === undefined ? 0 : message.clock.sampleAgeMs;
+      if (Number.isFinite(message.clock?.offsetMs) && Number.isFinite(message.clock?.rttMs) && message.clock.rttMs >= 0 &&
+          Number.isFinite(sampleAgeMs) && sampleAgeMs >= 0 && sampleAgeMs <= CLOCK_FRESH_MS) {
+        device.clock = { offsetMs: message.clock.offsetMs, rttMs: message.clock.rttMs, measuredAt: device.lastSeen - sampleAgeMs };
       }
     } else if (message.type === 'CLOCK_PROBE' && Number.isFinite(message.clientSentAt)) {
       this.connections.get(id)?.send({ v: 1, type: 'CLOCK_REPLY', clientSentAt: message.clientSentAt, serverReceivedAt: Date.now(), serverSentAt: Date.now() });
@@ -167,7 +170,7 @@ export class Controller {
         const short = ids.find(id => this.devices.get(id)?.observed?.freeBytes != null && this.devices.get(id).observed.freeBytes < exp.vr.size + 500 * 1024 * 1024);
         if (short) throw new Error(`${short} sin espacio suficiente`);
       }
-      for (const id of ids) commands.push([id, action, { content: exp.vr, experienceId: exp.id }]);
+      for (const id of ids) commands.push([id, action, { content: exp.vr, experienceId: exp.id, experience: exp, eventName: this.desired.eventName }]);
     } else if (action === 'PLAY') {
       if (ids.length !== this.desired.selected.length || ids.some(id => !this.desired.selected.includes(id))) throw new Error('PLAY requiere todos los visores seleccionados');
       if (this.desired.phase !== 'PREPARING' && this.desired.phase !== 'READY') throw new Error('Ejecutá PREPARE primero');
@@ -185,11 +188,15 @@ export class Controller {
     } else if (COMMANDS.has(action)) {
       if (['PAUSE', 'RESUME', 'STOP', 'LOBBY'].includes(action) && this.desired.selected.some(id => !ids.includes(id))) throw new Error(`${action} requiere todos los visores seleccionados`);
       if (action === 'PAUSE' && this.desired.phase !== 'PLAYING') throw new Error('PAUSE requiere PLAYING');
-      if (action === 'RESUME' && this.desired.phase !== 'PAUSED') throw new Error('RESUME requiere PAUSED');
+      if (action === 'RESUME') {
+        if (this.desired.phase !== 'PAUSED') throw new Error('RESUME requiere PAUSED');
+        const unavailable = ids.find(id => !this.online(id) || this.devices.get(id)?.observed?.playback !== 'PAUSED');
+        if (unavailable) throw new Error(`${unavailable} ya no está pausado en esta sesión. Volvé al inicio y prepará la experiencia.`);
+      }
       if (action === 'RESYNC' && !['PLAYING', 'SCHEDULED'].includes(this.desired.phase)) throw new Error('RESYNC requiere reproducción activa');
       if (action === 'PAUSE') { this.desired.pausedAtMs = this.expectedPosition(); this.desired.phase = 'PAUSED'; }
       if (action === 'RESUME') { this.desired.scheduledAt = Date.now() + 3000; this.desired.startAt = this.desired.scheduledAt - this.desired.pausedAtMs; this.desired.phase = 'SCHEDULED'; }
-      if (action === 'STOP' || action === 'LOBBY') { this.desired.phase = 'IDLE'; this.desired.startAt = null; this.desired.scheduledAt = null; }
+      if (action === 'STOP' || action === 'LOBBY') { this.desired.phase = 'IDLE'; this.desired.startAt = null; this.desired.scheduledAt = null; this.desired.pausedAtMs = 0; }
       for (const id of ids) commands.push([id, action, { targetPositionMs: this.expectedPosition(), startAt: this.desired.startAt, scheduledAt: this.desired.scheduledAt }]);
     } else throw new Error('Acción desconocida');
     await this.save();

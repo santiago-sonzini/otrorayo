@@ -1,0 +1,27 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "invitaciones-api",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": [
+        "--prefix",
+        "/Users/santiagosonzini/Desktop/otrorayo-invitaciones",
+        "run",
+        "dev"
+      ],
+      "port": 8787
+    },
+    {
+      "name": "invitaciones-dashboard",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": [
+        "--prefix",
+        "/Users/santiagosonzini/Desktop/otrorayo-invitaciones",
+        "run",
+        "dev:web"
+      ],
+      "port": 5174
+    }
+  ]
+}

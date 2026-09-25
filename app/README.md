@@ -1,13 +1,13 @@
-# OTRORAYO VR CONTROL · hito técnico 0.1
+# OTRORAYO VR CONTROL · hito técnico 0.2
 
-Este repositorio contiene un **controlador local y dos visores simulados** para validar el flujo de distribución y control sin Internet. Los archivos VR se descargan antes del show y se conservan en cada dispositivo simulado. No hay reproducción de video ni una app instalada en Quest todavía. Por eso el resultado del panel dice **LISTO PARA PRUEBA**, nunca «READY FOR SHOW».
+Este repositorio contiene el **controlador local, dashboard, dos visores simulados y el código fuente de la app Unity para Quest**. La app nativa está en [`quest/`](quest/README.md), con lobby 3D, descarga local, reproducción VR y herramientas de compilación/instalación USB. El núcleo de transporte C# está probado contra el controlador; generar el APK y verificar reproducción en Quest siguen pendientes de Unity/Android y hardware. El panel conserva **LISTO PARA PRUEBA**.
 
 La arquitectura y las decisiones pendientes están en [ARQUITECTURA.md](ARQUITECTURA.md). El contrato de mensajes está en [PROTOCOLO.md](PROTOCOLO.md). Los requisitos originales permanecen en `BRIEF_ORIGINAL.md`, `DECISION_TECNICA_INICIAL.md` y `PROMPT_MAESTRO.md`.
 
 ## Requisitos
 
 - Mac con Node.js 22 o posterior. No se requiere `npm install` ni Internet.
-- Para la demo, dos terminales adicionales. Para hardware: dos Quest 3S, router con DHCP, Mac por Ethernet, app nativa Quest (aún pendiente de implementación) y permisos de desarrollo.
+- Para la demo, dos terminales adicionales. Para hardware: dos Quest 3S, router con DHCP, Mac por Ethernet, APK de la app nativa Quest (ver [compilación e instalación](quest/README.md)) y permisos de desarrollo.
 
 ## Ejecutar la demo local
 
@@ -38,7 +38,7 @@ Para simular una pérdida de Wi-Fi de Q01 mientras sigue reproduciendo, reinicia
 node src/simulator.js --id=Q01 --token=TOKEN --outage-after-ms=15000 --outage-duration-ms=8000
 ```
 
-Copiar un `.mp4` de prueba a `app/data/content/`, pulsar **Actualizar archivos**, completar evento y experiencia, y pulsar **Registrar experiencia**. El controlador calcula SHA-256. Luego usar **Distribuir → Preparar → PLAY**. El sistema selecciona Q01 y Q02 por defecto. Los simuladores guardan sus copias en `app/data/sim/Q01/` y `Q02/`.
+Copiar un `.mp4` de prueba a `app/data/content/`, pulsar **Actualizar archivos**, completar evento y experiencia, y pulsar **Guardar experiencia**. El controlador calcula SHA-256. Luego usar **Distribuir → Preparar → PLAY**. El sistema selecciona Q01 y Q02 por defecto. Los simuladores guardan sus copias en `app/data/sim/Q01/` y `Q02/`.
 
 El botón **PLAY** queda bloqueado hasta que ambos dispositivos confirmen archivo validado, READY, batería ≥20 %, reloj reciente y conexión reciente. El servidor programa el inicio cuatro segundos en el futuro. El estado `PLAYING`, el timecode y el drift que se ven aquí son **simulados**: no miden latencia de decodificador, pantalla ni audio.
 
@@ -71,6 +71,8 @@ No registrar una nueva experiencia ni cambiar selección durante reproducción. 
 | Descarga con progreso, reanudación parcial y SHA-256 | Implementado en simulador y probado localmente |
 | READY, inicio futuro, ACK y reintentos de comando | Implementado en simulador y probado localmente |
 | Corte y reconexión simulados de un visor | Probado localmente |
-| App nativa, lobby 3D, decodificación VR y sincronía visual real | Pendiente de Unity y Quest 3S |
+| App nativa, lobby 3D, reproducción VR, instalador USB | Código implementado en `quest/`; APK y pruebas Unity/Quest pendientes |
+| Cliente C# ↔ controlador Node, descarga y reconexión | Compilado y probado sin Unity; ver `quest/README.md` |
+| Sincronía visual/audio real | Pendiente de medición en Quest 3S |
 | AUDIO PA, ROOM / SCREEN, interfaz externa | Fase posterior |
 | Diez Quest físicos, red de evento, tolerancias reales | Pendiente de medición presencial |

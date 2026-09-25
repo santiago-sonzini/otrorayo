@@ -9,7 +9,7 @@
 <body>
   <div class="shell">
     <header class="topbar">
-      <div class="brand"><span class="brandmark">O<span>×</span>R</span><span class="brandtext">OTRORAYO <b>VR CONTROL</b><small>LOCAL SHOW SYSTEM / PROTOTIPO 0.1</small></span></div>
+      <div class="brand"><span class="brandmark">O<span>×</span>R</span><span class="brandtext">OTRORAYO <b>VR CONTROL</b><small>LOCAL SHOW SYSTEM / PROTOTIPO 0.2</small></span></div>
       <div class="server-pill"><span class="live-dot"></span> CONTROLADOR LOCAL <strong id="server-status">CONECTANDO</strong></div>
     </header>
 
@@ -24,7 +24,16 @@
         <section class="panel control-panel">
           <div class="section-head"><div><span class="eyebrow">01 / OPERACIÓN</span><h2>Master control</h2></div><span class="mini-label" id="selected-label">Q01 + Q02</span></div>
           <div class="timeline"><div class="timeline-label"><span id="timecode">00:00:00</span><span id="duration">SIN DURACIÓN</span></div><div class="track"><div id="progress"></div></div></div>
+          <section id="video-delivery" class="video-delivery" aria-label="Envío del video" hidden>
+            <span class="eyebrow">ENVÍO DEL VIDEO</span>
+            <h3 id="delivery-title" role="status"></h3>
+            <p id="delivery-file"></p>
+            <div id="delivery-devices"></div>
+            <p class="delivery-note">El video queda guardado en cada visor. Después: Preparar → Play.</p>
+          </section>
           <div class="controls"><button data-action="DISTRIBUTE" class="button ghost">↓ Distribuir</button><button data-action="PREPARE" class="button ghost">◉ Preparar</button><button data-action="PLAY" class="button primary">▶ PLAY</button><button data-action="PAUSE" class="button ghost">Ⅱ Pausa</button><button data-action="RESUME" class="button ghost">↗ Reanudar</button><button data-action="RESYNC" class="button ghost">⟳ Resync</button></div>
+          <button data-action="LOBBY" class="button ghost restart-button">↩ Volver al inicio</button>
+          <p id="operation-hint" class="hint operation-hint" role="status">Conectando con el controlador…</p>
           <div class="selection"><span class="eyebrow">VISOR / SELECCIÓN</span><div id="selection-buttons"></div></div>
           <div class="emergency"><span class="eyebrow">ACCIONES DE EMERGENCIA · MANTENER 1 S</span><div><button data-hold="STOP" class="button danger">■ STOP ALL</button><button data-hold="LOBBY" class="button danger-outline">↩ LOBBY ALL</button><button data-hold="RESYNC" class="button danger-outline">⟳ RESYNC ALL</button><button class="button disabled" disabled title="AUDIO PA se integra tras validar el núcleo VR">MUTE PA · PRÓXIMA FASE</button></div></div>
         </section>
@@ -34,7 +43,28 @@
 
       <section class="panel fleet"><div class="section-head"><div><span class="eyebrow">03 / FLOTA</span><h2>Quest</h2></div><span class="mini-label">ÚLTIMA TELEMETRÍA VISIBLE</span></div><div id="devices" class="device-grid"></div></section>
 
-      <section class="panel setup"><div class="section-head"><div><span class="eyebrow">04 / PREPARACIÓN</span><h2>Experiencia</h2></div><span class="mini-label">ARCHIVOS LOCALES EN LA MAC</span></div><p class="hint">Copiá el video a <code>app/data/content/</code>. Registrar una experiencia calcula el SHA-256 antes de distribuirla.</p><form id="experience-form"><label>Evento<input name="eventName" placeholder="AMPER — 50 AÑOS" required></label><label>Experiencia<input name="name" placeholder="EXPANSIÓN" required></label><label>Video VR<select name="file" id="files" required><option value="">Seleccionar archivo…</option></select></label><label>Duración (segundos)<input name="durationSeconds" type="number" min="0" placeholder="Opcional"></label><button class="button ghost" type="submit">Registrar experiencia</button><button class="button text" type="button" id="refresh-files">↻ Actualizar archivos</button></form></section>
+      <section class="panel setup">
+        <div class="section-head"><div><span class="eyebrow">04 / PREPARACIÓN</span><h2>Experiencia</h2></div><span class="mini-label">ARCHIVOS LOCALES EN LA MAC</span></div>
+        <p class="hint">Copiá el video a <code>app/data/content/</code>. Guardá la experiencia y después distribuí y prepará los visores para aplicar el video y la sala de espera.</p>
+        <form id="experience-form">
+          <fieldset><legend>Video y evento</legend>
+            <label>Evento<input name="eventName" placeholder="AMPER — 50 AÑOS" maxlength="80" required></label>
+            <label>Experiencia<input name="name" placeholder="EXPANSIÓN" maxlength="80" required></label>
+            <label>Video VR<select name="file" id="files" required><option value="">Seleccionar archivo…</option></select></label>
+            <label>Duración (segundos)<input name="durationSeconds" type="number" min="0" placeholder="Opcional"></label>
+            <label>Proyección<select name="projection"><option value="360">360° · entorno completo</option><option value="180">180° · vista frontal</option></select></label>
+            <label>Formato del video<select name="stereo"><option value="mono">Monoscópico · misma imagen en ambos ojos</option><option value="top-bottom">Estéreo · arriba / abajo</option><option value="side-by-side">Estéreo · lado a lado</option></select></label>
+            <label>Audio en los Quest<select name="muted"><option value="true">Silenciado · usar audio externo</option><option value="false">Activado · audio del video</option></select></label>
+          </fieldset>
+          <fieldset><legend>Sala de espera</legend>
+            <label>Ambiente<select name="lobbyPreset"><option value="orbit">Órbita</option><option value="aurora">Aurora</option><option value="minimal">Minimalista</option></select></label>
+            <label>Color de ambiente<input name="lobbyColor" type="color" value="#75dec9"></label>
+            <label>Intensidad de partículas<input name="particleIntensity" type="range" min="0" max="1" step="0.05" value="0.5"><span class="range-help">Sin partículas ← → Más partículas</span></label>
+          </fieldset>
+          <button class="button ghost" type="submit">Guardar experiencia</button>
+          <button class="button text" type="button" id="refresh-files">↻ Actualizar archivos</button>
+        </form>
+      </section>
     </main>
     <footer><span>OTRORAYO / VR CONTROL</span><span>PROTOTIPO LOCAL · LA SINCRONÍA AÚN REQUIERE VALIDACIÓN EN QUEST 3S</span></footer>
   </div>

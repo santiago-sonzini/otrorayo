@@ -1,0 +1,15 @@
+{
+  "source": "otrorayo-instagram.jpg",
+  "method": "Measured circle/line fit with boolean union; analytic curves remove raster stair steps",
+  "center": [
+    319.5,
+    319.5
+  ],
+  "outerRadius": 175.3,
+  "innerRadius": 161.4,
+  "binaryMaskIoU": 0.9788359788359788,
+  "vertices": [
+    495,
+    495
+  ]
+}

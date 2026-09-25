@@ -1,0 +1,6 @@
+import{chromium}from'/Users/santiagosonzini/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright/index.mjs';
+import assert from'node:assert/strict';import{writeFile}from'node:fs/promises';
+const b=await chromium.launch({headless:true,executablePath:'/Applications/Google Chrome.app/Contents/MacOS/Google Chrome'});const p=await b.newPage({viewport:{width:1440,height:1000}});
+await p.goto('http://127.0.0.1:8787');await p.waitForFunction(()=>document.body.innerText.includes('Video principal · v2'));
+const state=await p.evaluate(async()=>await(await fetch('/api/state')).json());assert.equal(state.desired.experience.vr.file,'v2.mp4');assert.equal(state.desired.experience.vr.projection,'360');assert.equal(state.desired.experience.vr.stereo,'mono');assert.equal(state.desired.phase,'IDLE');
+await p.screenshot({path:'exports/dashboard-v2.png',fullPage:true});await writeFile('exports/video-loaded.json',JSON.stringify({experience:state.desired.experience,selected:state.desired.selected,online:state.devices.filter(d=>d.online).map(d=>d.id),phase:state.desired.phase,preloaded:false,dashboardBinding:'127.0.0.1'},null,2));console.log('Dashboard verified: v2.mp4 registered; IDLE; online:',state.devices.filter(d=>d.online).length);await b.close();

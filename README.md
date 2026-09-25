@@ -4,7 +4,7 @@ Estudio de diseño de experiencias para eventos.
 
 - [`landing/`](landing/README.md): sitio web, intro, recorrido inmersivo y formulario.
 - [`server/`](server/): servidor Python y envío privado de consultas por SMTP.
-- [`app/`](app/README.md): prototipo independiente de control de experiencias VR.
+- [`app/`](app/README.md): controlador de experiencias VR y [app Unity para Quest](app/quest/README.md).
 
 ## Ejecutar la web
 

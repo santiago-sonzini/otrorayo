@@ -1,0 +1,15 @@
+<!DOCTYPE html><html lang="es"><head><meta charset="utf-8"><link rel="icon" href="data:,"><meta name="viewport" content="width=1920,height=1080"><title>OTRORAYO · Bienvenida</title>
+<script src="vendor/gsap.min.js"></script>
+<style>*{box-sizing:border-box}html,body{margin:0;width:1920px;height:1080px;overflow:hidden;background:#000}#root{width:1920px;height:1080px;position:relative}canvas{display:block;width:100%;height:100%}</style></head><body>
+<div data-hf-id="hf-0mtn" id="root" data-composition-id="main" data-start="0" data-duration="27" data-width="1920" data-height="1080"><canvas data-hf-id="hf-tp9b" id="scene" class="clip" data-start="0" data-duration="27" data-track-index="0" aria-label="Bienvenida espacial OTRORAYO"></canvas></div>
+<audio data-hf-id="hf-ltat" id="sound-design" src="assets/sound-design.wav" data-start="0" data-duration="27" data-track-index="1"></audio>
+<script type="module">
+import {createExperience} from './scene.js';
+const experience=await createExperience(document.getElementById('scene'));
+window.experience=experience;
+const state={time:0};const tl=gsap.timeline({paused:true});
+tl.to(state,{time:27,duration:27,ease:'none',onUpdate:()=>experience.renderAt(state.time)},0);
+window.__timelines=window.__timelines||{};window.__timelines.main=tl;
+window.addEventListener('hf-seek',e=>experience.renderAt(e.detail.time));
+window.__hfForceTimelineRebind?.();window.sceneReady=true;
+</script></body></html>

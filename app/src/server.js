@@ -23,6 +23,23 @@ async function sha256(file) {
   return hash.digest('hex');
 }
 function validFile(name) { return typeof name === 'string' && /^[\w .()-]+\.(mp4|m4v|mov|wav)$/i.test(name) && name === path.basename(name); }
+function experienceOptions(input) {
+  const projection = input.projection ?? '360';
+  const stereo = input.stereo ?? 'mono';
+  const muted = input.muted ?? true;
+  const lobby = input.lobby ?? {};
+  const preset = lobby.preset ?? 'orbit';
+  const color = lobby.color ?? '#75dec9';
+  const particleIntensity = lobby.particleIntensity ?? 0.5;
+  if (!['360', '180'].includes(projection)) throw new Error('Proyección inválida: elegí 360° o 180°');
+  if (!['mono', 'top-bottom', 'side-by-side'].includes(stereo)) throw new Error('Formato estéreo inválido');
+  if (typeof muted !== 'boolean') throw new Error('Audio del visor inválido');
+  if (typeof lobby !== 'object' || Array.isArray(lobby) || !['orbit', 'aurora', 'minimal'].includes(preset) ||
+      typeof color !== 'string' || !/^#[\da-f]{6}$/i.test(color) || !Number.isFinite(particleIntensity) || particleIntensity < 0 || particleIntensity > 1) {
+    throw new Error('Configuración de sala de espera inválida');
+  }
+  return { projection, stereo, muted, lobby: { preset, color, particleIntensity } };
+}
 
 export async function startServer({ host = process.env.OTRORAYO_HOST || '0.0.0.0', port = Number(process.env.OTRORAYO_PORT || 8787), dataDir = path.join(APP_DIR, 'data') } = {}) {
   const contentDir = path.join(dataDir, 'content');
@@ -34,11 +51,16 @@ export async function startServer({ host = process.env.OTRORAYO_HOST || '0.0.0.0
   const dashboards = new Set();
   const controller = new Controller(dataDir, state => { for (const peer of dashboards) peer.send(state); });
   await controller.load();
-  const authed = candidate => typeof candidate === 'string' && candidate.length === token.length && timingSafeEqual(Buffer.from(candidate), Buffer.from(token));
+  const tokenBytes = Buffer.from(token);
+  const authed = candidate => {
+    if (typeof candidate !== 'string') return false;
+    const bytes = Buffer.from(candidate);
+    return bytes.length === tokenBytes.length && timingSafeEqual(bytes, tokenBytes);
+  };
 
   const server = http.createServer(async (req, res) => {
-    const url = new URL(req.url, `http://${req.headers.host || 'localhost'}`);
     try {
+      const url = new URL(req.url, 'http://localhost');
       if (url.pathname === '/device/content' && req.method === 'GET') {
         if (!authed(url.searchParams.get('token'))) return json(res, 401, { error: 'Token inválido' });
         const vr = controller.desired.experience?.vr;
@@ -61,11 +83,12 @@ export async function startServer({ host = process.env.OTRORAYO_HOST || '0.0.0.0
       if (url.pathname === '/api/files' && req.method === 'GET') return json(res, 200, (await readdir(contentDir)).filter(validFile));
       if (url.pathname === '/api/experience' && req.method === 'POST') {
         const input = await body(req);
+        const { projection, stereo, muted, lobby } = experienceOptions(input);
         if (!validFile(input.file) || !String(input.name || '').trim()) throw new Error('Nombre y archivo VR válidos requeridos');
         const file = path.join(contentDir, input.file);
         const info = await stat(file);
         if (!info.isFile() || !info.size) throw new Error('Archivo vacío o inválido');
-        const experience = { id: randomUUID(), eventName: String(input.eventName || 'EVENTO').trim().slice(0, 80), name: String(input.name).trim().slice(0, 80), vr: { file: input.file, size: info.size, sha256: await sha256(file) }, durationMs: Number.isFinite(input.durationMs) ? Math.max(0, input.durationMs) : 0, createdAt: Date.now() };
+        const experience = { id: randomUUID(), eventName: String(input.eventName || 'EVENTO').trim().slice(0, 80), name: String(input.name).trim().slice(0, 80), vr: { file: input.file, size: info.size, sha256: await sha256(file), projection, stereo, muted }, lobby, durationMs: Number.isFinite(input.durationMs) ? Math.max(0, input.durationMs) : 0, createdAt: Date.now() };
         await controller.setExperience(experience);
         return json(res, 200, experience);
       }
@@ -73,14 +96,16 @@ export async function startServer({ host = process.env.OTRORAYO_HOST || '0.0.0.0
       if (url.pathname === '/api/action' && req.method === 'POST') { const input = await body(req); return json(res, 200, await controller.action(input.action, input.ids)); }
       if (req.method !== 'GET') return json(res, 405, { error: 'Método inválido' });
       const page = url.pathname === '/' ? 'index.html' : url.pathname.slice(1);
-      if (!['index.html', 'app.js', 'style.css'].includes(page)) return json(res, 404, { error: 'No encontrado' });
+      if (!['index.html', 'app.js', 'controls.js', 'style.css'].includes(page)) return json(res, 404, { error: 'No encontrado' });
       const file = path.join(APP_DIR, 'public', page);
       res.writeHead(200, { 'content-type': MIME[path.extname(file)], 'cache-control': 'no-store' });
       createReadStream(file).pipe(res);
     } catch (error) { if (!res.headersSent) json(res, error.code === 'ENOENT' ? 404 : 400, { error: error.message }); else res.destroy(error); }
   });
   server.on('upgrade', (req, socket, head) => {
-    const url = new URL(req.url, `http://${req.headers.host || 'localhost'}`);
+    let url;
+    try { url = new URL(req.url, 'http://localhost'); }
+    catch { socket.destroy(); return; }
     const dashboard = url.pathname === '/ws/dashboard' && isLocal(req.socket.remoteAddress) && req.headers.origin === `http://${req.headers.host}`;
     const device = url.pathname === '/ws/device' && authed(url.searchParams.get('token'));
     if (!dashboard && !device) { socket.write('HTTP/1.1 403 Forbidden\r\n\r\n'); socket.destroy(); return; }
@@ -97,10 +122,13 @@ export async function startServer({ host = process.env.OTRORAYO_HOST || '0.0.0.0
         id = message.id;
         try { controller.setConnection(id, peer, req.socket.remoteAddress); clearTimeout(helloTimer); }
         catch { peer.close(1008); }
-      } else controller.receive(id, message);
+      } else controller.receive(id, message, peer);
     });
   });
-  await new Promise(resolve => server.listen(port, host, resolve));
+  await new Promise((resolve, reject) => {
+    server.once('error', reject);
+    server.listen(port, host, () => { server.off('error', reject); resolve(); });
+  });
   const timer = setInterval(() => controller.tick(), 1000);
   const address = server.address();
   console.log(`OTRORAYO VR CONTROL: http://localhost:${address.port}`);

@@ -1,0 +1,6 @@
+<linker>
+  <assembly fullname="Assembly-CSharp" preserve="all" />
+  <assembly fullname="Newtonsoft.Json" preserve="all" />
+  <assembly fullname="System.Net.Http" preserve="all" />
+  <assembly fullname="System" preserve="all" />
+</linker>

@@ -1,5 +1,7 @@
 # Arquitectura y plan verificable
 
+Actualización 0.2: el cliente Unity está implementado en [`quest/`](quest/README.md). Su transporte C# pasó pruebas con el controlador Node; el hito físico 0.2 continúa abierto hasta compilar el APK y ensayar dos Quest.
+
 ## Decisiones
 
 1. **Quest:** desarrollar en Unity para Android/Quest con OpenXR y Meta XR SDK. Unity permite lobby 3D en tiempo real, un reproductor de archivo local y acceso a telemetría del sistema. La documentación de Unity indica que `VideoPlayer.Prepare()` prepara recursos antes de `Play()`, pero el tiempo y formato soportados se deben medir en Quest 3S con los archivos finales. [Meta: requisitos Unity/Quest](https://developers.meta.com/horizon/documentation/unity/unity-development-requirements/), [Unity: VideoPlayer.Prepare](https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Video.VideoPlayer.Prepare.html).
@@ -56,8 +58,8 @@ El controlador calcula SHA-256 sobre el archivo fuente al registrar la experienc
 
 ## Riesgos actuales
 
-- No hay app nativa ni medición de video en Quest: el simulador solo valida transporte y lógica de control.
+- La app nativa tiene código fuente, pero aún no hay APK compilado ni medición física en Quest. Las pruebas C# y el simulador validan transporte/lógica, no la salida audiovisual.
 - `Date.now()` y WebSocket en LAN no garantizan precisión audiovisual. Migrar el reloj de ejecución a monotónico y medir salida física.
 - El token compartido en URL y HTTP sin TLS son adecuados solo para una LAN aislada de laboratorio. Provisión y autenticación por visor son requisito antes de show.
-- El servidor WebSocket incluido acepta mensajes de texto pequeños y sin fragmentación; reemplazarlo por una implementación probada antes de ampliar interoperabilidad y escala.
+- El servidor WebSocket admite texto UTF-8 fragmentado, ping/pong y límites de tamaño, probado con ClientWebSocket de .NET. Sigue siendo una implementación propia que debe revisarse antes de producción.
 - AUDIO PA/ROOM aún no existen. Si la Mac cae, esos canales dejarán de sonar o verse; la reproducción VR local debe continuar.

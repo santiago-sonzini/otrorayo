@@ -1,12 +1,18 @@
 {
   "name": "otrorayo-vr-control",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "private": true,
   "type": "module",
   "scripts": {
     "start": "node src/server.js",
     "simulate": "node src/simulator.js",
-    "test": "node --test test/*.test.js"
+    "test": "node --test test/*.test.js",
+    "quest:doctor": "node quest/scripts/quest.mjs doctor",
+    "quest:build": "node quest/scripts/quest.mjs build",
+    "test:quest-installer": "node --test quest/Tests/Installer/*.test.mjs",
+    "test:quest-core": "node quest/Tests/Core/integration.mjs"
   },
-  "engines": { "node": ">=22" }
+  "engines": {
+    "node": ">=22"
+  }
 }
