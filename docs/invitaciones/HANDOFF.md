@@ -76,10 +76,11 @@ Carpetas:
 
 ## 6. Deploy
 
-- **Hoy**: desde cada carpeta, `npm run deploy` (typecheck + build + `wrangler deploy --config wrangler.production.json`). `wrangler` ya está autenticado en la Mac del estudio.
-- Migraciones de la plataforma (antes del deploy): `npx wrangler d1 migrations apply DB --remote --config wrangler.production.json`.
+- **Deploy automático activo** (Cloudflare Workers Builds, conectado el 25/09/2026): cada push a `main` de `santiago-sonzini/otrorayo-invitaciones` y `santiago-sonzini/valeria-zachary` construye (`npm ci`) y publica (`npm run deploy`). Probado con un push vacío: ambos publicaron solos en ~1 minuto.
+- Ramas que no son `main`: Cloudflare sube una versión de preview sin publicarla. En la plataforma el comando de preview no incluye el build (`npx wrangler versions upload --config wrangler.production.json`); si se van a usar previews, cambiarlo a `npm run build && npx wrangler versions upload --config wrangler.production.json` en Settings → Build.
+- Migraciones de la plataforma: aplicarlas **antes** del push que las necesita: `npx wrangler d1 migrations apply DB --remote --config wrangler.production.json`.
+- Deploy manual de emergencia: `npm run deploy` en la carpeta (wrangler autenticado en la Mac).
 - Git: `main` = producción. Commits con autor `santiago sonzini <santisonzini1234@gmail.com>`. Push por HTTPS con la credencial de GitHub del llavero.
-- **Pendiente (lo hace una persona)**: conectar cada Worker a su repo en Cloudflare → Workers & Pages → Worker → Settings → Build → Connect (GitHub). Rama `main`, build `npm ci`, deploy `npm run deploy`. Después, cada push a `main` publica solo. Hasta entonces, el push **no** despliega.
 - Verificar siempre la URL real después de publicar (`/__release` en la invitación, `/api/v1/health` en la plataforma).
 
 ## 7. Desarrollo local
@@ -108,7 +109,6 @@ Carpetas:
 
 ## 10. Pendientes y preguntas abiertas
 
-- Conectar Workers Builds (sección 6).
 - SPF `-all` opcional.
 - `/api/v1/projects/valeria-zachary/site` responde sin login (proyecto publicado): confirmar si la invitación debe seguir pública.
 - Excel en el panel de Mariapía: ofrecido, no hecho (ese proyecto no se tocó).
